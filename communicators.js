@@ -30,10 +30,10 @@ https://developer.chrome.com/docs/extensions/reference/api/runtime#property-last
 
 Even though the API calls include the chrome.* syntax, the chrome namespace is compatible 
 with the Firefox browser.storage API, so it is able to use the same syntax. The only difference 
-as of 2/21/2024 is that chrome doesn't support the use of Promises but Firefox does; therefore 
-to ensure the capatability of the two with the same code, only callback functions should
-be used for asynchronous reactions and functionality. Both accept and return JSON objects
-directly without any stringifying or parsing needed.
+as of the date last modified is that chrome doesn't support the use of Promises but Firefox does; 
+therefore to ensure the capatability of the two with the same code, only callback functions should
+be used for asynchronous reactions and functionality. Both accept and return JSON objects directly 
+without any stringifying or parsing needed.
 
 Delta objects are used to store each note as a snapshot of the Quill interface as it was when 
 it was last saved. Within storage the Deltas are stored as values with their ID keys being the 
@@ -43,18 +43,24 @@ Firefox browser.storage using the same API calls.
 More information on Delta objects can be found at: https://quilljs.com/docs/delta/
 */
 
-function writeNote(dateKey, Delta) {
+//====================================================================================================================================================
+//---------------------------------------- Write Function ---------------------------------------------------------------------------------------------
+//====================================================================================================================================================
+
+function writeNote(dateKey, Delta, synced=false) {
     /* Function handles the API calls for the .set functionality, either for initially creating an
     object at an ID or subsequently updating it. 
     
     Args:
-        dateKey (str): the date refering to the note being set or updated, used as the ID in storage
-        Delta (Delta object): A snapshot of the Quill interface at the time it was last saved, in the
-        format of a Delta object, able to be placed into storage directly.
+        dateKey (str): the date referring to the note being set or updated, used as the ID in storage
+        Delta (Delta object): A snapshot of the Quill interface at the time it was last saved, as a
+        Delta object (JSON), able to be placed into storage directly.
         */
+    //setCorrectly (bool): boolean value set based on if each of the API calls is successful (true if successful, false if not)
     let setCorrectly = true;
 
     chrome.storage.local.set({ [dateKey]: Delta });
+
     if (chrome.runtime.lastError) {
         console.error(`Error setting the note for ${dateKey} in local storage.`);
         setCorrectly = false;
@@ -62,17 +68,24 @@ function writeNote(dateKey, Delta) {
         console.log(`Succefully set note for ${dateKey} in local storage! `);
     }
 
-    chrome.storage.sync.set({ [dateKey]: jsonDelta});
-    if (chrome.runtime.lastError) {
-        console.error(`Error setting the note for ${dateKey} in synced storage.`);
-        setCorrectly = false;
-    } else {
-        console.log(`Succefully set note for ${dateKey} in synced storage!`);
+    if (synced) {
+        chrome.storage.sync.set({ [dateKey]: jsonDelta});
+        if (chrome.runtime.lastError) {
+            console.error(`Error setting the note for ${dateKey} in synced storage.`);
+            setCorrectly = false;
+        } else {
+            console.log(`Succefully set note for ${dateKey} in synced storage!`);
+        }
     }
 
     return setCorrectly;
 
 }
+
+
+//====================================================================================================================================================
+//---------------------------------------- Fetch Functions ---------------------------------------------------------------------------------------------
+//====================================================================================================================================================
 
 function fetchNoteLocal(dateKey) {
     
@@ -100,7 +113,12 @@ function fetchNoteSynced(dateKey) {
     });
 }
 
-function removeNote(dateKey) {
+
+//====================================================================================================================================================
+//---------------------------------------- Removal Functions ---------------------------------------------------------------------------------------------
+//====================================================================================================================================================
+
+function removeNote(dateKey, synced=false) {
 
     let successfulDelete = true;
 
@@ -113,14 +131,16 @@ function removeNote(dateKey) {
         }
     });
 
-    chrome.storage.sync.remove([dateKey], function() {
-        if (chrome.runtime.lastError) {
-            console.error(`Error removing note for ${dateKey} from synced storage.`);
-            successfulDelete = false;
-        } else {
-            console.log(`Successfully removed note for ${dateKey} from synced storage!`);
-        }
-    });
+    if (synced) {
+        chrome.storage.sync.remove([dateKey], function() {
+            if (chrome.runtime.lastError) {
+                console.error(`Error removing note for ${dateKey} from synced storage.`);
+                successfulDelete = false;
+            } else {
+                console.log(`Successfully removed note for ${dateKey} from synced storage!`);
+            }
+        });
+    }
 
     return successfulDelete;
 }
