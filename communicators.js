@@ -55,10 +55,13 @@ function writeNote(dateKey, Delta, synced=false) {
         dateKey (str): the date referring to the note being set or updated, used as the ID in storage
         Delta (Delta object): A snapshot of the Quill interface at the time it was last saved, as a
         Delta object (JSON), able to be placed into storage directly.
+        synced (bool): defaults to false, synced being set to true means that the delta is written 
+        into the local and sync storage instead of only local when synced is set to false
         */
     //setCorrectly (bool): boolean value set based on if each of the API calls is successful (true if successful, false if not)
     let setCorrectly = true;
 
+    // chrome.storage is the syntax for accessing the built-in browser storage. 
     chrome.storage.local.set({ [dateKey]: Delta });
 
     if (chrome.runtime.lastError) {
@@ -102,7 +105,7 @@ function fetchNoteLocal(dateKey) {
 
 function fetchNoteSynced(dateKey) {
     
-    chrome.storage.sync.get([dateKey], function(returnedJsonDelta) {
+    chrome.storage.sync.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
             console.error(`Error retrieving note for ${dateKey} from synced storage`);
             return {'error': `failed to store ${dateKey} in synced storage.`};
@@ -145,7 +148,7 @@ function removeNote(dateKey, synced=false) {
     return successfulDelete;
 }
 
-function clearCalendar() {
+function clearCalendar(synced=false) {
 
     let successfulClear = true;
 
@@ -158,14 +161,16 @@ function clearCalendar() {
         }
     });
 
-    chrome.storage.sync.clear(function() {
-        if (chrome.runtime.lastError) {
-            console.error("Error clearing synced storage.");
-            successfulClear = false;
-        } else {
-            console.log("Succesfully cleared synced storage.");
-        }
-    });
+    if (synced) {
+        chrome.storage.sync.clear(function() {
+            if (chrome.runtime.lastError) {
+                console.error("Error clearing synced storage.");
+                successfulClear = false;
+            } else {
+                console.log("Succesfully cleared synced storage.");
+            }
+        });
+    }
 
     return successfulClear;
 }
