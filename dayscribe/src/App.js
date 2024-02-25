@@ -1,31 +1,67 @@
-import './App.css';
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 
-function App() {
+import React, { useState } from 'react';
+import QuillEditor from "react-quill";
+
+import 'react-quill/dist/quill.snow.css';
+import styles from "./App.css";
+
+/*const Button = styled.button`
+  background-color: ${(props) => theme[props.theme].default};
+  color: white;
+  padding: 5px 15px;
+  border-radius: 5px;
+  outline: 0;
+  border: 0; 
+  text-transform: uppercase;
+  margin: 10px 0px;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px lightgray;
+  transition: ease background-color 250ms;
+  &:hover {
+    background-color: ${(props) => theme[props.theme].hover};
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+`;*/
+
+
+const Editor = () => {
+  // Editor state
+  const [value, setValue] = useState("");
+
   return (
-    <div className="App">
-      <header className="App-header">
-  
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.wrapper}>
+      <label className={styles.label}>Editor Content</label>
+      <h1> Welcome to DayScribe! </h1>
+        <MyButton />
+        <MyButton />
+      <QuillEditor
+        className={styles.editor}
+        theme="snow"
+        value={value}
+        onChange={(value) => setValue(value)}
+      />
     </div>
   );
+};
+
+function MyButton(){
+
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    //go to previous delta obj
+
+  }
+  return (
+    <button onClick={handleClick}>I'm a button</button>
+  )
+
 }
-function MyComponent() {
-  const [value, setValue] = useState('');
 
-  return <ReactQuill theme="snow" value={value} onChange={setValue} />;
-}
 
-export default App;
-
+export default Editor;
+// OR App
 //work in here
