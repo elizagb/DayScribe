@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import QuillEditor from "react-quill";
+import QuillNotesEditor from './QuillNotesEditor';
 
 import 'react-quill/dist/quill.snow.css';
 import styles from "./App.css";
@@ -37,12 +37,14 @@ const Editor = () => {
       <h1> Welcome to DayScribe! </h1>
         <MyButton />
         <MyButton />
-      <QuillEditor
+      {/* <QuillEditor
         className={styles.editor}
         theme="snow"
         value={value}
         onChange={(value) => setValue(value)}
-      />
+      /> */}
+      <QuillNotesEditor/>
+
     </div>
   );
 };
