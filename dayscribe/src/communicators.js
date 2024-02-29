@@ -43,6 +43,8 @@ Firefox browser.storage using the same API calls.
 More information on Delta objects can be found at: https://quilljs.com/docs/delta/
 */
 
+/* global chrome */
+
 //====================================================================================================================================================
 //---------------------------------------- Write Function ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
@@ -59,30 +61,40 @@ function writeNote(dateKey, Delta, synced=false) {
         into the local and sync storage instead of only local when synced is set to false
         */
     //setCorrectly (bool): boolean value set based on if each of the API calls is successful (true if successful, false if not)
-    let setCorrectly = true;
+    let setCorrectly = true; // set in the individual .set calls to track if either fail and returning this finding
+    // but allowing for both .set calls to proceed if synced is set to true
 
-    // chrome.storage is the syntax for accessing the built-in browser storage. 
-    chrome.storage.local.set({ [dateKey]: Delta });
+    // chrome.storage is the syntax for accessing the built-in browser storage, for either Firefox or Chrome
+    // dateKey used as the ID key stored with the Delta argument as the value in the local browser storage
+    chrome.storage.local.set({ [dateKey]: Delta }); 
 
-    if (chrome.runtime.lastError) {
-        console.error(`Error setting the note for ${dateKey} in local storage.`);
+    // chrome.runtime.lastError is defined as an error by the browser extension if the .set call is unsuccessful,
+    // undefined otherwise and equates to false in the checked for boolean status
+    if (chrome.runtime.lastError) { // if the API call is unsuccessful...
+        //console.error prints to standard error the message that is passed in the arguments
+        console.error(`Error setting the note for ${dateKey} in local storage.`); // displays error message on console
+        // assign setCorrectly to false if the .set fails so that the failure can be tracked from calling function
         setCorrectly = false;
-    } else {
-        console.log(`Succefully set note for ${dateKey} in local storage! `);
+    } else { // if the API call is successful
+        console.log(`Succefully set note for ${dateKey} in local storage! `); 
+        // output to console that API call was successful
     }
 
+    // check if synced is true, meaning the delta object should be stored in the sync storage as well as local
     if (synced) {
-        chrome.storage.sync.set({ [dateKey]: jsonDelta});
-        if (chrome.runtime.lastError) {
-            console.error(`Error setting the note for ${dateKey} in synced storage.`);
+        // dateKey used as the ID key stored with the Delta argument as the value in the sync browser storage
+        chrome.storage.sync.set({ [dateKey]: Delta});
+        if (chrome.runtime.lastError) { // if the API call is unsuccessful...
+            console.error(`Error setting the note for ${dateKey} in synced storage.`); // displays error message on console
+            // assign setCorrectly to false if the .set fails so that the failure can be tracked from calling function
             setCorrectly = false;
-        } else {
+        } else { // if the API call is successful
             console.log(`Succefully set note for ${dateKey} in synced storage!`);
+            // output to console that API call was successful
         }
     }
 
-    return setCorrectly;
-
+    return setCorrectly; // returns true if both API calls were successful, false if at least one was unsuccessful
 }
 
 
@@ -95,9 +107,9 @@ function fetchNoteLocal(dateKey) {
     chrome.storage.local.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
             console.error(`Error retrieving note for ${dateKey} from local storage`);
-            return {'error': `failed to store ${dateKey} in local storage.`};
+            return {'error': `failed to retrieve ${dateKey} in local storage.`};
         } else {
-            console.log(`Successfully stored note for ${dateKey} in local storage!`);
+            console.log(`Successfully retrieved note for ${dateKey} from local storage!`);
             return returnedDelta[dateKey]
         }
     });
@@ -108,9 +120,9 @@ function fetchNoteSynced(dateKey) {
     chrome.storage.sync.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
             console.error(`Error retrieving note for ${dateKey} from synced storage`);
-            return {'error': `failed to store ${dateKey} in synced storage.`};
+            return {'error': `failed to retrieve ${dateKey} from synced storage.`};
         } else {
-            console.log(`Successfully stored note for ${dateKey} in synced storage!`);
+            console.log(`Successfully retrieved note for ${dateKey} from synced storage!`);
             return returnedDelta[dateKey];
         }
     });
