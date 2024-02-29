@@ -7,7 +7,7 @@ Containes functions which simplify the Chrome chrome.storage and Firefox browser
 API calls.
 writeNote: Used to either create or update a note through the storage of the 
 Quill interface as a Delta oject.
-fetchNoteLocal: Used to retrieve the delta object at the specified ID key
+fetchNote: Used to retrieve the delta object at the specified ID key
 from local storage to then display on the Quill interface as a saved version of 
 the last time it was accessed.
 fetNoteSynced: Used to retrieve the delta object at the specified ID key
@@ -102,7 +102,7 @@ function writeNote(dateKey, Delta, synced=false) {
 //---------------------------------------- Fetch Functions ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
 
-function fetchNoteLocal(dateKey) {
+function fetchNote(dateKey) {
     
     chrome.storage.local.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
@@ -111,6 +111,22 @@ function fetchNoteLocal(dateKey) {
         } else {
             console.log(`Successfully retrieved note for ${dateKey} from local storage!`);
             return returnedDelta[dateKey]
+        }
+    });
+}
+
+function fetchAllDates(month) {
+    chrome.storage.local.get(null, function(returnedItems) {
+        if (chrome.runtime.lastError) {
+            console.error('Error retrieving all items from local storage in fetchAllDates call');
+            return { 'error': 'failed to retieve all items from local storage in fetchAllDates call' };
+        } else {
+            console.log('Successfully retrieved all objects from local storage!');
+            let itemKeys = Object.keys(returnedItems);
+            // Will use filter function to check if the key has a date matching the month given as 
+            // an argument to the function, then the key (date) is added to a result list of the 
+            // dates that have notes associated with them in a given month, just need to know the 
+            // date format
         }
     });
 }
