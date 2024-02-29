@@ -48,8 +48,8 @@ const Editor = () => {
       <h1><center>Welcome to Dayscribe</center></h1>
 
       <h1><center>Note for: {dateKey}</center></h1>
-        <Arrow onClick={LeftArrow(dateKey, quill)}/>
-        <Arrow onClick={RightArrow(dateKey, quill)}/>
+        {/* <Arrow onClick={LeftArrow(dateKey, quill)}/> */}
+        {/* <Arrow onClick={RightArrow(dateKey, quill)}/> */}
         <DeleteButton onClick={DeleteButton(dateKey, quill)}/>
         <Calendar/>
         <QuillNotesEditor/>
