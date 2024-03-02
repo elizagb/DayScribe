@@ -14,10 +14,19 @@ function getSpecificNote(date, direction=1){
     
     
     // in practical use, doesn't make much sense to have many of these intermediary functions
+    // especially since the quill object exists in App.js already
+    // ----> but if we can access that Quill object, we can abstact all in-line functions with
+    //       functions from these helper modules
     // however getSpecificNote may be a worthwhile abstraction to clear up App.js
+
+    // linear probe (to next day regardless of populated or not)
+    // 
+
 }
 
 function getValidDates(date){
     // call fetchPopulatedDates()
+    // convert date from unix epoch to a date-string:
+    // format
 
 }
