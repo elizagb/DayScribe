@@ -13,7 +13,7 @@ const year = currentDate.getFullYear();
 const month = currentDate.getMonth()+1;
 const day = currentDate.getDate();
 
-//format jan 19 2024. change this
+//format 'yyyymmdd'
 const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
 
 const Editor = () => {
@@ -39,11 +39,13 @@ const Editor = () => {
     var deltaNote = new delta();
     handleChange(value, deltaNote); //update
     writeNote(dateKey, deltaNote);
+    
   }
   else{
     var deltaNote = fetchNoteLocal(dateKey);
     handleChange(value, deltaNote);
   }
+  Quill.updateContents(nextDelta);
 
   return (
     <div className={styles.wrapper}>
@@ -52,9 +54,9 @@ const Editor = () => {
 
       <h1><center>Note for: {dateKey}</center></h1>
 
-        <Arrow onClick={Arrow(dateKey, currentDate, quill, 1)}/>
-        <Arrow onClick={Arrow(dateKey, currentDate, quill, -1)}/>
-        <DeleteButton onClick={DeleteButton(dateKey, currentDate, quill)}/>
+        <Arrow onClick={Arrow(dateKey, currentDate, 1)}/>
+        <Arrow onClick={Arrow(dateKey, currentDate, -1)}/>
+        <DeleteButton onClick={DeleteButton(dateKey, currentDate)}/>
         <button onClick={Sample}>Calendar Icon</button>
         <QuillNotesEditor/>
     </div>
@@ -63,27 +65,27 @@ const Editor = () => {
 
 //Figure out how to relate currentDate and dateKey
 
-function Arrow(dateKey = todaysDate, currentDate, quill, dateShift){
+function Arrow(dateKey = todaysDate, currentDate, dateShift){
 
   function handleClick() {
     //put current note in delta object
-    var delta = quill.GetContents();
+    var delta = Quill.GetContents();
     if (delta.ops.length > 0)
     {    //write to storage
       writeNote(dateKey, delta);
     }
-    //get next day (or previous day)
-    const nextDay = new Date(currentDate);
-    nextDay.setDate(currentDate.getDate() + dateShift);
-
-    const nextDayStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
-    var nextDateKey = nextDayStr;
-    var nextDelta = fetchNoteLocal(nextDateKey);
+    //get previous or next day
+    var newDateKey = getDateKey(currentDate, dateShift)
+    var newDelta = fetchNoteLocal(newDateKey);
+    //if null, create a new delta object
+    if (newDelta === null){
+      newDelta = new delta();
+    }
 
     //replace contents with newDelta
-    quill.updateContents(nextDelta);
-    handleChange(value, nextDelta);
-    dateKey = nextDateKey;
+    Quill.updateContents(newDelta);
+    handleChange(value, newDelta);
+    dateKey = newDateKey;
     }
   return (
     <button onClick={handleClick}>button</button>
@@ -91,20 +93,16 @@ function Arrow(dateKey = todaysDate, currentDate, quill, dateShift){
 
 }
 
-function DeleteButton(dateKey = todaysDate, currentDate, quill){
+function DeleteButton(dateKey = todaysDate, currentDate){
   //Delete button. upon click, removes note.
 
   function handleClick(){
-   // var delta = quill.GetContents();
-    //get delta object for previous day
-    const prevDay = new Date(currentDate);
-    prevDay.setDate(currentDate.getDate() - 1);
-    const prevDayStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
-    var prevDateKey = prevDayStr;
+    //get delta for previous day
+    var newDateKey = getDateKey(currentDate, -1);
     newDelta = fetchNoteLocal(prevDateKey);
 
     removeNote(dateKey);
-    quill.updateContents(newDelta);
+    Quill.updateContents(newDelta);
     handleChange(value, newDelta);
     dateKey = prevDateKey;
   }
@@ -113,5 +111,13 @@ function DeleteButton(dateKey = todaysDate, currentDate, quill){
   )
 }
 
+function getDateKey(currentDate, dateShift){
+  //dateShift = 1 or -1
+  const newDate = new Date(currentDate);
+  newDate.setDate(currentDate.getDate() + dateShift);
+  const newDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
+  var dateKey = newDateStr;
+  return dateKey
+}
 
 export default Editor;
