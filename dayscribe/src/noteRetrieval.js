@@ -22,6 +22,9 @@ function getSpecificNote(date, direction=1){
     // linear probe (to next day regardless of populated or not)
     // 
 
+
+    // pass in the quill object from App.js in this function
+    // import quill to this module and assume the quill object is present, and manipulate it
 }
 
 function getValidDates(date){

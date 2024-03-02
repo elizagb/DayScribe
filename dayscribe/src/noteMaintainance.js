@@ -5,6 +5,8 @@ function noteWriteRequest(date, note){
 
     // register listener for beforeunload event? 
     // or unload event?
+
+
 }
 
 function noteDeleteRequest(date){
