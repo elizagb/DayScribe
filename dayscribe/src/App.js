@@ -5,7 +5,7 @@ import Quill from 'quill';
 import './QuillNotesEditor';
 import 'react-quill/dist/quill.snow.css';
 import styles from "./App.css";
-import { writeNote,fetchNoteLocal, removeNote } from './communicators.js';
+import { writeNote,fetchNote, removeNote } from './communicators.js';
 
 //get current date key
 const currentDate = new Date();
@@ -33,14 +33,16 @@ const Editor = () => {
   };//fix */
 
 
-  dateKey = currentDateStr; //idk about formatting yet
+  const dateKey = ""; //idk about formatting yet
   //load initial delta object. Create new note for today, or load today's
-  if (fetchNoteLocal(dateKey) === null){
+  if (fetchNote(dateKey) === null){
     writeNote(dateKey, null);
-    var deltaNote = fetchNoteLocal(dateKey);
+    var deltaNote = fetchNote(dateKey);
   }
   else
-    var deltaNote = fetchNoteLocal(dateKey);
+    var deltaNote = fetchNote(dateKey);
+        
+  function Sample(){}
 
   return (
     <div className={styles.wrapper}>
@@ -48,6 +50,7 @@ const Editor = () => {
       <h1><center>Welcome to Dayscribe</center></h1>
 
       <h1><center>Note for: {dateKey}</center></h1>
+
 
         <Arrow onClick={Arrow(dateKey, currentDate, quill, 1)}/>
         <Arrow onClick={Arrow(dateKey, currentDate, quill, -1)}/>
@@ -59,8 +62,8 @@ const Editor = () => {
 };
 
 //Figure out how to relate currentDate and dateKey
-
-function Arrow(dateKey = todaysDate, currentDate, quill, dateShift){
+// function Arrow(dateKey = todaysDate, currentDate, quill, dateShift){
+function Arrow(dateKey, currentDate, quill, dateShift){
 
   function handleClick() {
     var delta = quill.GetContents();
@@ -68,7 +71,9 @@ function Arrow(dateKey = todaysDate, currentDate, quill, dateShift){
     const nextDay = new Date(currentDate);
     nextDay.setDate(currentDate.getDate() + dateShift);
 
-    var newDelta = fetchNoteLocal(newDateKey);
+
+    // var newDelta = fetchNoteLocal(newDateKey);
+    var newDelta = fetchNote(nextDay);
     quill.updateContents(newDelta);
     }
   return (
@@ -77,7 +82,8 @@ function Arrow(dateKey = todaysDate, currentDate, quill, dateShift){
 
 }
 
-function DeleteButton(dateKey = todaysDate, quill){
+// function DeleteButton(dateKey = todaysDate, quill){
+function DeleteButton(dateKey, quill){
   //Delete button. upon click, removes note.
   const [count, setCount] = useState(0);
 
