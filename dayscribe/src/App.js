@@ -5,7 +5,7 @@ import Quill from 'quill';
 import './QuillNotesEditor';
 import 'react-quill/dist/quill.snow.css';
 import styles from "./App.css";
-import { writeNote,fetchNoteLocal, removeNote } from './communicators.js';
+import { writeNote,fetchNote, removeNote } from './communicators.js';
 import Sample from './CalendarInterface.js';
 //get current date key
 const currentDate = new Date();
@@ -22,7 +22,7 @@ const Editor = () => {
   //state to store delta object (quill)
   const [delta, setDelta] = useState(null);
 
-  //const quill = new Quill('#editor', { theme: 'snow' });
+  const quill = new Quill('#root', { theme: 'snow' });
   const handleChange = (delta, source, editor) => {
     // 'delta' contains the changes made in the editor
     console.log('Delta:', delta)
@@ -35,17 +35,18 @@ const Editor = () => {
   var dateKey = currentDateStr; //idk about formatting yet
 
   //load initial delta object. Create new note for today, or load today's
-  if (fetchNoteLocal(dateKey) === null){
+  if (fetchNote(dateKey) === null){
     var deltaNote = new delta();
     handleChange(deltaNote); //update
     writeNote(dateKey, deltaNote);
     
   }
   else{
-    var deltaNote = fetchNoteLocal(dateKey);
+    var deltaNote = fetchNote(dateKey);
     handleChange(deltaNote);
   }
-  Quill.updateContents(deltaNote);
+  // Quill.updateContents(deltaNote);
+  quill.updateContents(deltaNote);
 
   return (
     <div className={styles.wrapper}>
@@ -76,7 +77,7 @@ function Arrow(dateKey = currentDate, dateShift){
     }
     //get previous or next day
     var newDateKey = getDateKey(currentDate, dateShift)
-    var newDelta = fetchNoteLocal(newDateKey);
+    var newDelta = fetchNote(newDateKey);
     //if null, create a new delta object
     if (newDelta === null){
       newDelta = new delta();
@@ -100,7 +101,7 @@ function DeleteButton(dateKey = currentDate){
   function handleClick(){
     //get delta for previous day
     var newDateKey = getDateKey(currentDate, -1);
-    var newDelta = fetchNoteLocal(newDateKey);
+    var newDelta = fetchNote(newDateKey);
 
     removeNote(dateKey);
     Quill.updateContents(newDelta);

@@ -49,7 +49,7 @@ More information on Delta objects can be found at: https://quilljs.com/docs/delt
 //---------------------------------------- Write Function ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
 
-function writeNote(dateKey, Delta, synced=false) {
+export function writeNote(dateKey, Delta, synced=false) {
     /* Function handles the API calls for the .set functionality, either for initially creating an
     object at an ID or subsequently updating it. 
     
@@ -102,7 +102,7 @@ function writeNote(dateKey, Delta, synced=false) {
 //---------------------------------------- Fetch Functions ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
 
-function fetchNote(dateKey) {
+export function fetchNote(dateKey) {
     
     chrome.storage.local.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
@@ -149,7 +149,7 @@ function fetchNoteSynced(dateKey) {
 //---------------------------------------- Removal Functions ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
 
-function removeNote(dateKey, synced=false) {
+export function removeNote(dateKey, synced=false) {
 
     let successfulDelete = true;
 
