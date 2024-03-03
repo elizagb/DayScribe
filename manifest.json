@@ -1,11 +1,11 @@
 {
     "manifest_version": 3,
-    "name": "DayScribe (Extension name)",
+    "name": "DayScribe (Outside of /dayscribe)",
     "description": "(Extension Description)",
     "version": "0.1",
     "action": {
         "default_popup": "dayScribe.html",
-        "default_icon": "template.png",
+        "default_icon": "dayscribe.png",
         "default_title": "DayScribe v0.1"
     },
     "permissions":["storage"]

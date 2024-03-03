@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import QuillNotesEditor from './QuillNotesEditor';
 import Quill from 'quill';
 import './QuillNotesEditor';
@@ -23,6 +23,13 @@ const Editor = () => {
   const [delta, setDelta] = useState(null);
 
   const quill = new Quill('#editor', { theme: 'snow' });
+  
+  useEffect(() => {
+    console.log("oh no");
+
+  }, []);
+  
+  
 /*  const handleChange = (content, delta, source, editor) => {
     // 'delta' contains the changes made in the editor
     console.log('Delta:', delta)
