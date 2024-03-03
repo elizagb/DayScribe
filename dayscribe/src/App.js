@@ -5,8 +5,9 @@ import Quill from 'quill';
 import './QuillNotesEditor';
 import 'react-quill/dist/quill.snow.css';
 import styles from "./App.css";
-import { writeNote,fetchNoteLocal, removeNote } from './communicators.js';
+import { writeNote,fetchNote, removeNote } from './communicators.js';
 import Sample from './CalendarInterface.js';
+
 //get current date key
 const currentDate = new Date();
 const year = currentDate.getFullYear();
@@ -18,7 +19,7 @@ const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toStrin
 
 const Editor = () => {
   // Editor state for react
-  const [value, setValue] = useState("");
+  //const [value, setValue] = useState("");
   //state to store delta object (quill)
   const [delta, setDelta] = useState(null);
 
@@ -35,14 +36,14 @@ const Editor = () => {
   var dateKey = currentDateStr; //idk about formatting yet
 
   //load initial delta object. Create new note for today, or load today's
-  if (fetchNoteLocal(dateKey) === null){
+  if (fetchNote(dateKey) === null){
     var deltaNote = new delta();
     handleChange(deltaNote); //update
     writeNote(dateKey, deltaNote);
     
   }
   else{
-    var deltaNote = fetchNoteLocal(dateKey);
+    var deltaNote = fetchNote(dateKey);
     handleChange(deltaNote);
   }
   Quill.updateContents(deltaNote);
@@ -76,7 +77,7 @@ function Arrow(dateKey = currentDate, dateShift){
     }
     //get previous or next day
     var newDateKey = getDateKey(currentDate, dateShift)
-    var newDelta = fetchNoteLocal(newDateKey);
+    var newDelta = fetchNote(newDateKey);
     //if null, create a new delta object
     if (newDelta === null){
       newDelta = new delta();
@@ -100,13 +101,12 @@ function DeleteButton(dateKey = currentDate){
   function handleClick(){
     //get delta for previous day
     var newDateKey = getDateKey(currentDate, -1);
-    var newDelta = fetchNoteLocal(newDateKey);
+    var newDelta = fetchNote(newDateKey);
 
     removeNote(dateKey);
     Quill.updateContents(newDelta);
     dateKey = newDateKey;
   }
- // handleChange(newDelta);
   return (
     <button onClick={handleClick}>Delete</button>
   )
