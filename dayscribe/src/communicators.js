@@ -53,7 +53,7 @@ More information on Delta objects can be found at: https://quilljs.com/docs/delt
 //---------------------------------------- Write Function ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
 
-function writeNote(dateKey, Delta, synced=false) {
+export function writeNote(dateKey, Delta, synced=false) {
     /* Function handles the API calls for the .set functionality, either for initially creating an
     object at an ID or subsequently updating it. 
     
@@ -106,7 +106,7 @@ function writeNote(dateKey, Delta, synced=false) {
 //---------------------------------------- Fetch Functions ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
 
-function fetchNote(dateKey) {
+export function fetchNote(dateKey) {
     
     chrome.storage.local.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
@@ -119,7 +119,7 @@ function fetchNote(dateKey) {
     });
 }
 
-function fetchAllDates(month) {
+export function fetchAllDates(month) {
     chrome.storage.local.get(null, function(returnedItems) {
         if (chrome.runtime.lastError) {
             console.error('Error retrieving all items from local storage in fetchAllDates call');
@@ -135,7 +135,7 @@ function fetchAllDates(month) {
     });
 }
 
-function fetchNoteSynced(dateKey) {
+export function fetchNoteSynced(dateKey) {
     
     chrome.storage.sync.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
@@ -153,7 +153,7 @@ function fetchNoteSynced(dateKey) {
 //---------------------------------------- Removal Functions ---------------------------------------------------------------------------------------------
 //====================================================================================================================================================
 
-function removeNote(dateKey, synced=false) {
+export function removeNote(dateKey, synced=false) {
 
     let successfulDelete = true;
 
@@ -180,7 +180,7 @@ function removeNote(dateKey, synced=false) {
     return successfulDelete;
 }
 
-function clearCalendar(synced=false) {
+export function clearCalendar(synced=false) {
 
     let successfulClear = true;
 
