@@ -119,6 +119,16 @@ export function fetchNote(dateKey) {
     });
 }
 
+function inMonth(month, dates) {
+    let inMo = [];
+    for (const date of dates) {
+        if (date.month == month) {
+            inMo.push(date);
+        }
+    }
+    return inMo;
+}
+
 export function fetchAllDates(month) {
     chrome.storage.local.get(null, function(returnedItems) {
         if (chrome.runtime.lastError) {
@@ -127,10 +137,7 @@ export function fetchAllDates(month) {
         } else {
             console.log('Successfully retrieved all objects from local storage!');
             let itemKeys = Object.keys(returnedItems);
-            // Will use filter function to check if the key has a date matching the month given as 
-            // an argument to the function, then the key (date) is added to a result list of the 
-            // dates that have notes associated with them in a given month, just need to know the 
-            // date format
+            return inMonth(month, itemKeys);
         }
     });
 }
