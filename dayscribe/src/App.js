@@ -6,41 +6,46 @@ import './QuillNotesEditor';
 import 'react-quill/dist/quill.snow.css';
 import styles from "./App.css";
 import { writeNote,fetchNoteLocal, removeNote } from './communicators.js';
+import Sample from './CalendarInterface.js';
+//get current date key
+const currentDate = new Date();
+const year = currentDate.getFullYear();
+const month = currentDate.getMonth()+1;
+const day = currentDate.getDate();
 
-  //get current date key
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth() +1;
-const day = today.getDate();
-
-const todaysDate = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
+//format 'yyyymmdd'
+const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
 
 const Editor = () => {
-  // Editor state
+  // Editor state for react
   const [value, setValue] = useState("");
-  //state to store delta object
+  //state to store delta object (quill)
   const [delta, setDelta] = useState(null);
 
-  const quill = new Quill('#editor', { theme: 'snow' });
-/*  const handleChange = (content, delta, source, editor) => {
+  //const quill = new Quill('#editor', { theme: 'snow' });
+  const handleChange = (delta, source, editor) => {
     // 'delta' contains the changes made in the editor
     console.log('Delta:', delta)
     setDelta(delta); //update delta state
     //Update the editor state
-    setEditorState(content);
+   // setValue(value);
     
-  }; //fix her*/
- 
-  //Initialize note
-  var dateKey = todaysDate;
+  };
+
+  var dateKey = currentDateStr; //idk about formatting yet
 
   //load initial delta object. Create new note for today, or load today's
-  if (fetchNoteLocal(todaysDate) === null){
-    writeNote(dateKey, null);
-    var deltaNote = fetchNoteLocal(dateKey);
+  if (fetchNoteLocal(dateKey) === null){
+    var deltaNote = new delta();
+    handleChange(deltaNote); //update
+    writeNote(dateKey, deltaNote);
+    
   }
-  else
+  else{
     var deltaNote = fetchNoteLocal(dateKey);
+    handleChange(deltaNote);
+  }
+  Quill.updateContents(deltaNote);
 
   return (
     <div className={styles.wrapper}>
@@ -48,67 +53,72 @@ const Editor = () => {
       <h1><center>Welcome to Dayscribe</center></h1>
 
       <h1><center>Note for: {dateKey}</center></h1>
-        {/* <Arrow onClick={LeftArrow(dateKey, quill)}/> */}
-        {/* <Arrow onClick={RightArrow(dateKey, quill)}/> */}
-        <DeleteButton onClick={DeleteButton(dateKey, quill)}/>
-        <Calendar/>
+
+        <Arrow onClick={Arrow(dateKey, currentDate, 1)}/>
+        <Arrow onClick={Arrow(dateKey, currentDate, -1)}/>
+        <DeleteButton onClick={DeleteButton(dateKey, currentDate)}/>
+        <button onClick={Sample()}>Calendar Icon</button>
         <QuillNotesEditor/>
     </div>
   );
 };
 
+//Figure out how to relate currentDate and dateKey
 
-function LeftArrow(dateKey = todaysDate, quill){
-  //Left arrow. Upon click, decrements data, stores delta obj, loads new.
-  const [count, setCount] = useState(0);
-
+function Arrow(dateKey = currentDate, dateShift){
 
   function handleClick() {
-    var delta = quill.GetContents();
-    writeNote(dateKey, delta);
-    var newDateKey = dateKey - 1; //TODO: figure this out
-    var newDelta = fetchNoteLocal(newDateKey);
-    quill.updateContents(newDelta);
+    //put current note in delta object
+    var delta = Quill.GetContents();
+    if (delta.ops.length > 0)
+    {    //write to storage
+      writeNote(dateKey, delta);
     }
+    //get previous or next day
+    var newDateKey = getDateKey(currentDate, dateShift)
+    var newDelta = fetchNoteLocal(newDateKey);
+    //if null, create a new delta object
+    if (newDelta === null){
+      newDelta = new delta();
+    }
+
+    //replace contents with newDelta
+    Quill.updateContents(newDelta);
+    //handleChange(value, newDelta);
+    dateKey = newDateKey;
+    }
+   // handleChange(newDelta);
   return (
-    <button onClick={handleClick}>Left</button>
+    <button onClick={handleClick}>button</button>
   )
 
 }
 
-function RightArrow(dateKey = todaysDate,quill){
-  //Right arrow. Upon click, increments date, stores delta obj, loads new.
-  const [count, setCount] = useState(0);
-
-  function handleClick() {
-    var delta = quill.GetContents();
-    writeNote(dateKey, delta);
-    var newDateKey = dateKey + 1;
-    var newDelta = fetchNoteLocal(newDateKey);
-    quill.updateContents(newDelta);
-    }
-  return (
-    <button onClick={handleClick}>Right</button>
-  )
-}
-
-
-function DeleteButton(dateKey = todaysDate, quill){
+function DeleteButton(dateKey = currentDate){
   //Delete button. upon click, removes note.
-  const [count, setCount] = useState(0);
 
   function handleClick(){
+    //get delta for previous day
+    var newDateKey = getDateKey(currentDate, -1);
+    var newDelta = fetchNoteLocal(newDateKey);
+
     removeNote(dateKey);
-    //quill.updateContents(newDelta);
+    Quill.updateContents(newDelta);
+    dateKey = newDateKey;
   }
+ // handleChange(newDelta);
   return (
     <button onClick={handleClick}>Delete</button>
   )
 }
 
-function Calendar(){
-//interact with the calendar component
-
+function getDateKey(currentDate, dateShift){
+  //dateShift = 1 or -1
+  const newDate = new Date(currentDate);
+  newDate.setDate(currentDate.getDate() + dateShift);
+  const newDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
+  var dateKey = newDateStr;
+  return dateKey
 }
 
 export default Editor;
