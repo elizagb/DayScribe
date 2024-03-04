@@ -1,11 +1,25 @@
-import React, {useState} from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useState, useEffect } from 'react';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 
 function MyComponent() {
-    const [value, setValue] = useState ('');
+    const [quill, setQuill] = useState(null);
 
-    return <ReactQuill theme="snow" value={value} onChange={setValue} />;
+    useEffect(() => {
+        if (!quill) {
+            const editor = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: true,
+                },
+            });
+            setQuill(editor);
+        }
+    }, [quill]);
+
+    return (
+        <div id="editor"></div>
+    );
 }
 
 export default MyComponent;

@@ -1,15 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 import App from './App';
 
-const root = document.createElement("div")
-root.className = "container"
-document.body.appendChild(root)
-const rootDiv = ReactDOM.createRoot(root);
-rootDiv.render(
+// Create a container div dynamically
+const root = document.createElement("div");
+root.className = "container";
+document.body.appendChild(root);
+
+// Function to initialize Quill
+const initializeQuill = () => {
+  const quill = new Quill(root, { theme: 'snow' });
+};
+
+// Render the React app and initialize Quill after rendering
+ReactDOM.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
+  root,
+  initializeQuill
 );
-
-//this good

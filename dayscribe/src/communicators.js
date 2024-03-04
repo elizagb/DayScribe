@@ -1,3 +1,7 @@
+/* global chrome */
+// Your code using chrome.storage and other chrome.* APIs
+
+
 /* CS 422 Winter 2024
 communicators.py
 Created by Luke Marshall 2/21/2024
@@ -115,7 +119,17 @@ export function fetchNote(dateKey) {
     });
 }
 
-function fetchAllDates(month) {
+function inMonth(month, dates) {
+    let inMo = [];
+    for (const date of dates) {
+        if (date.month == month) {
+            inMo.push(date);
+        }
+    }
+    return inMo;
+}
+
+export function fetchAllDates(month) {
     chrome.storage.local.get(null, function(returnedItems) {
         if (chrome.runtime.lastError) {
             console.error('Error retrieving all items from local storage in fetchAllDates call');
@@ -123,15 +137,12 @@ function fetchAllDates(month) {
         } else {
             console.log('Successfully retrieved all objects from local storage!');
             let itemKeys = Object.keys(returnedItems);
-            // Will use filter function to check if the key has a date matching the month given as 
-            // an argument to the function, then the key (date) is added to a result list of the 
-            // dates that have notes associated with them in a given month, just need to know the 
-            // date format
+            return inMonth(month, itemKeys);
         }
     });
 }
 
-function fetchNoteSynced(dateKey) {
+export function fetchNoteSynced(dateKey) {
     
     chrome.storage.sync.get([dateKey], function(returnedDelta) {
         if (chrome.runtime.lastError) {
@@ -176,7 +187,7 @@ export function removeNote(dateKey, synced=false) {
     return successfulDelete;
 }
 
-function clearCalendar(synced=false) {
+export function clearCalendar(synced=false) {
 
     let successfulClear = true;
 
