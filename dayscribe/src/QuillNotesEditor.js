@@ -10,6 +10,7 @@ import styles from "./App.css";
 // This is the code for the Quill module (forgot official name)
 // creates the QuillNotesEditor object, which defines the system structure at a high level
 // including navigation buttons, titles, and the quill editor itself
+// source: https://medium.com/@andrewkizito54/creating-a-rich-text-editor-using-react-and-react-quill-3ea990435ade
 
 
 //get current date key
