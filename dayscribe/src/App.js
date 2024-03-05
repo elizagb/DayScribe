@@ -7,6 +7,7 @@ import './QuillNotesEditor';
 import 'quill/dist/quill.snow.css';
 import styles from "./App.css";
 import { writeNote,fetchNote, removeNote } from './communicators.js';
+import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 import Sample from './CalendarInterface.js';
 
 //get current date key
@@ -18,6 +19,12 @@ const day = currentDate.getDate();
 //format 'yyyymmdd'
 const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
 
+function Arrow(dateKey, quill, dateShift){
+
+}
+
+
+
 function App() {
 
   return (
@@ -26,6 +33,7 @@ function App() {
       <button> Previous Day</button>
       <button> Next Day</button>
       <QuillNotesEditor/>
+      <button onClick={ () => getSpecificNote(currentDate)}> Update Note</button>
     </div>
   )
 }
