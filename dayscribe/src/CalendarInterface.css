@@ -8,9 +8,14 @@ body {
   font-family: Segoe UI, Tahoma, sans-serif;
 }
 
-.highlighted {
-  background-color: lightgreen; /* Change to the color you want */
-  color: black; /* Change to the text color you want */
+.highlight {
+  background-color: green; 
+  /*color: black;   */
+}
+
+.react-calendar .highlight {
+  /* outline: 2px solid green; */
+  background: rgba(0, 254, 161, 0.5);
 }
 
 .Sample input,
