@@ -10,34 +10,7 @@ import { writeNote,fetchNote, removeNote } from './communicators.js';
 import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 import Sample from './CalendarInterface.js';
 
-//get current date key
-const currentDate = new Date();
-const year = currentDate.getFullYear();
-const month = currentDate.getMonth() + 1;
-const day = currentDate.getDate();
-
-//format 'yyyymmdd'
-const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
-
-function Arrow(dateKey, quill, dateShift){
-
-}
-
-// function App() {
-
-//   return (
-//     <div className = {styles.wrapper}>
-//       <div id='navigation'><center>Hello! Welcome to DayScribe </center></div>
-//       <button> Previous Day</button>
-//       <button> Next Day</button>
-//       <QuillNotesEditor/>
-//       <button onClick={ () => getSpecificNote(currentDate)}> Update Note</button>
-//     </div>
-//   )
-// }
-
-// export default App;
-
+// The App.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
 
 function App() {
 
