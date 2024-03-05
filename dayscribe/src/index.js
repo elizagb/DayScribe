@@ -18,7 +18,16 @@ const initializeQuill = () => {
 ReactDOM.render(
   <React.StrictMode>
     <App />
+  </React.StrictMode>
+);
+
+/*
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
   </React.StrictMode>,
   root,
   initializeQuill
 );
+*/
+
