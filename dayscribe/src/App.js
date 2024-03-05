@@ -21,7 +21,10 @@ const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toStrin
 function App() {
 
   return (
-    <div>
+    <div className = {styles.wrapper}>
+      <div id='navigation'><center>Hello! Welcome to DayScribe </center></div>
+      <button> Previous Day</button>
+      <button> Next Day</button>
       <QuillNotesEditor/>
     </div>
   )

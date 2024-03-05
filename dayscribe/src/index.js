@@ -14,28 +14,12 @@ import App from './App';
 //   const quill = new Quill(root, { theme: 'snow' });
 // };
 
-// // Render the React app and initialize Quill after rendering
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
 
-)
-
-
-/*
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  root,
-  initializeQuill
 );
-*/
+
 
