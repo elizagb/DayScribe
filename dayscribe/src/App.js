@@ -23,17 +23,27 @@ function Arrow(dateKey, quill, dateShift){
 
 }
 
+// function App() {
+
+//   return (
+//     <div className = {styles.wrapper}>
+//       <div id='navigation'><center>Hello! Welcome to DayScribe </center></div>
+//       <button> Previous Day</button>
+//       <button> Next Day</button>
+//       <QuillNotesEditor/>
+//       <button onClick={ () => getSpecificNote(currentDate)}> Update Note</button>
+//     </div>
+//   )
+// }
+
+// export default App;
 
 
 function App() {
 
   return (
-    <div className = {styles.wrapper}>
-      <div id='navigation'><center>Hello! Welcome to DayScribe </center></div>
-      <button> Previous Day</button>
-      <button> Next Day</button>
+    <div>
       <QuillNotesEditor/>
-      <button onClick={ () => getSpecificNote(currentDate)}> Update Note</button>
     </div>
   )
 }

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import QuillEditor from "react-quill";
+import Delta from 'quill-delta';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
+import {getSpecificNote, getValidDates} from './noteRetrieval.js'
+import {noteWriteRequest} from './noteMaintenance.js'
 import styles from "./App.css";
 
 
@@ -18,19 +21,27 @@ function Arrow(dateKey, quill, dateShift){
 
 }
 
-
+ // value = {value}
 
 export const QuillNotesEditor = () => {
   const [value, setValue] = useState('');
 
   //const quill = new Quill('#editor', { theme: 'snow' });
   return (
-  <div>
-    <QuillEditor 
-      theme="snow" 
-      value={value}
-      onChange = {(value)=> setValue(value)}
-    />
+    <div className = {styles.wrapper}>
+      <div id='navigation'><center>Hello! Welcome to DayScribe </center></div>
+      <button> Previous Day</button>
+      <button> Next Day</button>
+      
+      <QuillEditor 
+        theme="snow" 
+        value= {value}
+        onChange = {(value)=> setValue(value)} 
+      />
+      
+      <button onClick={ () => noteWriteRequest(currentDateStr, value)}> Update Note</button>
+      <button onClick={ () => getSpecificNote(currentDateStr)}> Retrieve Note</button>
+
   </div>
   );
 }

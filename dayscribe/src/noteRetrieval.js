@@ -3,11 +3,16 @@ import { writeNote,fetchNote, removeNote } from './communicators.js';
 
 
 export function getSpecificNote(date){
-    console.log("getSpecificNote called with ${date}\n");
-    fetchNote()
+    // is dateKey MMDDYYYY?
+    console.log(`\ngetSpecificNote called with ${date}\n`);
+    let formattedDate = "03032024"
+    let returnDelta = fetchNote(formattedDate);
+    
+    console.log(`return Delta = ${returnDelta}\n`);
+
 }
 
 
 export function getValidDates(date){
-
+    
 }
