@@ -104,14 +104,17 @@ export function writeNote(dateKey, Delta, synced=false) {
 
 export function fetchNote(dateKey) {
     
-    chrome.storage.local.get([dateKey], function(returnedDelta) {
-        if (chrome.runtime.lastError) {
-            console.error(`Error retrieving note for ${dateKey} from local storage`);
-            return {'error': `failed to retrieve ${dateKey} in local storage.`};
-        } else {
-            console.log(`Successfully retrieved note for ${dateKey} from local storage!`);
-            return returnedDelta[dateKey]
-        }
+    return new Promise((resolve, reject) => {
+    
+        chrome.storage.local.get([dateKey], function(returnedDelta) {
+            if (chrome.runtime.lastError) {
+                console.error(`Error retrieving note for ${dateKey} from local storage`);
+                reject ('error' + `failed to retrieve ${dateKey} in local storage.`);
+            } else {
+                console.log(`Successfully retrieved note for ${dateKey} from local storage!`);
+                resolve(returnedDelta[dateKey]);
+            }
+        });
     });
 }
 
@@ -126,15 +129,19 @@ function inMonth(month, dates) {
 }
 
 export function fetchAllDates(month) {
-    chrome.storage.local.get(null, function(returnedItems) {
-        if (chrome.runtime.lastError) {
-            console.error('Error retrieving all items from local storage in fetchAllDates call');
-            return { 'error': 'failed to retieve all items from local storage in fetchAllDates call' };
-        } else {
-            console.log('Successfully retrieved all objects from local storage!');
-            let itemKeys = Object.keys(returnedItems);
-            return inMonth(month, itemKeys);
-        }
+
+    return new Promise((resolve, reject) => {
+
+        chrome.storage.local.get(null, function(returnedItems) {
+            if (chrome.runtime.lastError) {
+                console.error('Error retrieving all items from local storage in fetchAllDates call');
+                reject('error' + 'failed to retieve all items from local storage in fetchAllDates call');
+            } else {
+                console.log('Successfully retrieved all objects from local storage!');
+                let itemKeys = Object.keys(returnedItems);
+                resolve(inMonth(month, itemKeys));
+            }
+        });
     });
 }
 

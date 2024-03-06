@@ -13,14 +13,17 @@ function formatDelta(delta) {
 
 
 export function noteWriteRequest(date, note){
-    // takes a date(currently hard-coded to march 3rd 2024), 
+    // takes a date(currently hard-coded to march 2nd 2024), 
     // prints it to console, and calls writeNote using the given date, and the note (Delta object)     
 
     let testDate = "03032024"; 
-    // const testDelta = new Delta().insert('testDelta input');
+    const testDelta = new Delta().insert('testDelta input');
      
-    console.log(`input note val => ${formatDelta(note)}\n`);
-    writeNote(testDate, note);
+    // console.log(`input note val => ${formatDelta(note)}\n`);
+    // writeNote(testDate, note);
+    
+    console.log(`input note val => ${formatDelta(testDelta)}\n`);
+    writeNote(testDate, testDelta);
 }
 
 export function noteDeleteRequest(date){
