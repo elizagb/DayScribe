@@ -56,24 +56,22 @@ function Arrow({shiftDirection, currentDate, updateDate}) {
     directionImage = nextArrow; 
   }
 
-  function handleClick() {
+  async function handleClick() {
     // needs to find the requested day, 
     // and set the quill editor's note 
 
-    let dateTokens = tokenizeDate(currentDate);
+      try {
+        let [returnDate, returnDelta] =  await(getSpecificNote(currentDate, shiftDirection));
+        console.log("handleClick:", returnDate, returnDelta);
+        updateDate(returnDate);  // update state for date
+
+      }
+      catch (error){
+          console.log(`fetch error: didn't pass the try block`);
+      }
     
-    // note: month is only one zero indexed (so awesome)
-    let currDate = new Date(dateTokens[2], dateTokens[0]-1, dateTokens[1]);
-    currDate.setDate(currDate.getDate() + shiftDirection);
-    // source: https://www.geeksforgeeks.org/how-to-calculate-the-yesterdays-date-in-javascript/a
 
-    let fetchDate = [currDate.getMonth() + 1, currDate.getDate(), currDate.getFullYear()];
-    let fetchDateStr = dateTokensToString(fetchDate);
-
-    updateDate(fetchDateStr);  // update state for date
-
-    let returnDelta =  getSpecificNote(fetchDateStr);
-    
+      // TODO: update Quill Editor
   }
 
   return (
