@@ -33,6 +33,8 @@ export const QuillNotesEditor = () => {
   const quillRef = useRef(null);  // get a reference to the quill editor we create
   // this "ref" object is accessed by quillRef.current attribute
 
+  // TODO: needs to use noteWriteRequest() to create/obtain the note from today
+
   return (
     <div className = {styles.wrapper}>
    

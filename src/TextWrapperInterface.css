@@ -2,7 +2,33 @@
     padding: 2rem 3rem;
   }
   
-  .label {
-    font-size: 1rem;
-    font-weight: 500;
-  }
+.label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+
+.navigationBar {
+  display: flex;
+  align-items: center;
+}
+
+.directionalArrow{
+  border: none;
+  background-color: transparent;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.noteID{
+  padding-left: 75px;
+  padding-right: 75px;
+}
+
+.directionalArrow img {
+  border: none;
+  background-color: transparent;
+  object-fit: fill;
+  width: 25px;
+  cursor: pointer;
+}

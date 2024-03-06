@@ -10,7 +10,6 @@ export async function getSpecificNote(date){
     // is dateKey MMDDYYYY?
     console.log(`\ngetSpecificNote called with date: ${date}\n`);
     let formattedDate = "03032024"
-    
 
     try {
         let returnDelta = await fetchNote(formattedDate);

@@ -11,6 +11,8 @@ import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 import {noteWriteRequest} from './noteMaintenance.js'
 import Sample from './CalendarInterface.js';
 import CalendarInterface from './CalendarInterface.js';
+import previousArrow from './images/previousArrow.png'
+import nextArrow from './images/nextArrow.png'
 
 // The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
 // 
@@ -18,23 +20,33 @@ import CalendarInterface from './CalendarInterface.js';
 const Arrow = ({shiftDirection}) => {
   // shiftDirection an enumerated value determining direction of button
   // 0 ==> left arrow, 1 ==> right arrow
-        // <Arrow date={null} quill={null} shiftDirection={0} />
 
   let directionText = null;
-  function handleClick() {
-    getSpecificNote("03032024");
-  }
-
+  let directionImage = null;
+  
   if (shiftDirection === 0){
-    directionText = "Previous Day"
     // left arrow
+    directionText = "previousArrow";
+    directionImage = previousArrow;
   }
   else {
     // right arrow
-    directionText = "Next Day"
+    directionText = "nextArrow";
+    directionImage = nextArrow; 
   }
 
-  return <button onClick={handleClick}> {directionText}</button>
+  function handleClick() {
+    // needs to find the requested day, 
+    // and set the quill editor's note 
+    let returnDelta =  getSpecificNote();
+  }
+
+
+  return (
+  <button onClick={handleClick} className = "directionalArrow">
+    <img src={directionImage} alt={directionText}/>
+  </button>  
+  )
 }
 
 var datekey = null;
@@ -43,11 +55,11 @@ function TextWrapperInterface() {
 
   return (
     <div>
-      <div><center>Hello! Welcome to DayScribe </center></div>
+      <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
       
-      <div className = "navigation">
+      <div className = "navigationBar">
         <Arrow shiftDirection={0} />
-        <h1> Note for: {datekey}</h1>
+        <h2 className = "noteID"> Note for: {datekey}</h2>
         <Arrow shiftDirection={1} />
       </div>
       
