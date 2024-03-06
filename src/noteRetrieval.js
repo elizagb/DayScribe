@@ -9,8 +9,8 @@ import { writeNote,fetchNote, removeNote, printDb } from './communicators.js';
 export async function getSpecificNote(date){
     // is dateKey MMDDYYYY?
     console.log(`\ngetSpecificNote called with date: ${date}\n`);
-    let formattedDate = "03032024"
-
+    // let formattedDate = "03032024"
+    let formattedDate = date.replaceAll("/", ""); 
     try {
         let returnDelta = await fetchNote(formattedDate);
         console.log(`return Delta = ${returnDelta}\n`);
