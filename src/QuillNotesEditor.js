@@ -5,7 +5,7 @@ import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 import {noteWriteRequest} from './noteMaintenance.js'
-import styles from "./App.css";
+import styles from "./TextWrapperInterface.js";
 
 // This is the code for the Quill module (forgot official name)
 // creates the QuillNotesEditor object, which defines the system structure at a high level
@@ -48,6 +48,7 @@ export const QuillNotesEditor = () => {
       
       <button onClick={ () => noteWriteRequest(currentDateStr, quillRef.current.getEditor().getContents())}> Update Note</button>
       <button onClick={ () => getSpecificNote(currentDateStr)}> Retrieve Note</button>
+
 
   </div>
   );
