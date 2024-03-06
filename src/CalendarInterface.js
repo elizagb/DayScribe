@@ -3,7 +3,7 @@ CalendarInterface.js
 Created by Eliza Black 2/25/2024
 Last modified: 3/4/2024
 */
-import './App.css';
+import './CalendarInterface.css';
 import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -49,9 +49,6 @@ const CalendarInterface = ({ showCalendar }) => {
   return (
     showCalendar && (
       <div className="Sample">
-        <header>
-          <h1>react-calendar sample page</h1>
-        </header>
         <div className="Sample__container">
           <main className="Sample__container__content">
             <Calendar

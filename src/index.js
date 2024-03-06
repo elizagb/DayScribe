@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
-import App from './App';
+import TextWrapperInterface from './TextWrapperInterface'
 
 // // Create a container div dynamically
 // const root = document.createElement("div");
@@ -17,7 +17,7 @@ import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <TextWrapperInterface />
   </React.StrictMode>,
 
 );

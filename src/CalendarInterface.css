@@ -18,24 +18,17 @@ body {
   background: rgba(0, 254, 161, 0.5);
 }
 
-.Sample input,
-.Sample button {
+.Cal input,
+.Cal button {
   font: inherit;
 }
 
-.Sample header {
-  background-color: #323639;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  color: white;
-}
-
-.Sample header h1 {
+.Cal header h1 {
   font-size: inherit;
   margin: 0;
 }
 
-.Sample__container {
+.Cal__container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -44,11 +37,11 @@ body {
   padding: 10px;
 }
 
-.Sample__container > * > * {
+.Cal__container > * > * {
   margin: 10px;
 }
 
-.Sample__container__content {
+.Cal__container__content {
   display: flex;
   max-width: 100%;
   flex-basis: 420px;
@@ -58,6 +51,6 @@ body {
   padding-top: 1em;
 }
 
-.Sample__container__content .react-calendar {
+.Cal__container__content .react-calendar {
   margin: 0 auto;
 }
