@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import QuillNotesEditor from './QuillNotesEditor.js';
 import Quill from 'quill';
 import Delta from 'quill-delta';
@@ -38,8 +38,8 @@ function tokenizeDate(date){
 }
 
 
-function Arrow({shiftDirection, currentDate, updateDate}) {
-// function Arrow(shiftDirection, date, changeDate){
+// function Arrow({shiftDirection, currentDate, updateDate, quill}) {
+function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   // shiftDirection an enumerated value determining direction of button
   // -1 ==> left arrow, 1 ==> right arrow
   let directionText = null;
@@ -65,14 +65,26 @@ function Arrow({shiftDirection, currentDate, updateDate}) {
         console.log("handleClick:", returnDate, returnDelta);
         updateDate(returnDate);  // update state for date
 
+        // TODO: update Quill Editor
+        if (returnDelta !== undefined) {
+          // quill.current.getEditor().setContents(returnDelta);
+          //quill.current.setContents(returnDelta);
+          const testDelta = new Delta().insert('testDelta in Arrow');
+          quill.current.getEditor().setContents(testDelta);
+        
+
+        }
+        else{
+          console.log("No existing Delta for this day.");
+        }
+        return;
+      
       }
       catch (error){
-          console.log(`fetch error: didn't pass the try block`);
+          console.log(`Handle click error: didn't pass the try block`);
       }
-    
-
-      // TODO: update Quill Editor
-  }
+      
+    }
 
   return (
   <button onClick={handleClick} className = "directionalArrow">
@@ -92,24 +104,38 @@ function TextWrapperInterface() {
     setCurrentDate(newDate);
   }
 
+  // const quillEditor =<QuillNotesEditor/>;
+  const quillRef = useRef(null);
+
   return (
     <div>
       <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
       
       <div className = "navigationBar">
-        <Arrow shiftDirection={-1} 
-          currentDate = {currentDate} updateDate = {updateCurrentDate}/>
+        <Arrow shiftDirection={-1} currentDate = {currentDate} 
+          updateDate = {updateCurrentDate} quill={quillRef}/>
         <h2 className = "noteID"> Note for: {currentDate}</h2>
-        <Arrow shiftDirection={1} 
-          currentDate = {currentDate} updateDate = {updateCurrentDate}/>
+        <Arrow shiftDirection={1} currentDate = {currentDate} 
+          updateDate = {updateCurrentDate} quill= {quillRef}/>
       </div>
       
-      <QuillNotesEditor/>
+      <QuillNotesEditor ref={quillRef} /> 
 
       <button onClick={ () => noteWriteRequest('03022024', null)}> Update Note</button>
       <CalendarInterface showCalendar={true} />
     </div>
   )
 }
+
+
+{/* <div className = "navigationBar">
+        <Arrow shiftDirection={-1} currentDate = {currentDate} 
+          updateDate = {updateCurrentDate} quillRef={quillEditor}/>
+        <h2 className = "noteID"> Note for: {currentDate}</h2>
+        <Arrow shiftDirection={1} currentDate = {currentDate} 
+          updateDate = {updateCurrentDate} quillRef= {quillEditor}/>
+      </div>
+      
+      {quillEditor} */}
 
 export default TextWrapperInterface;
