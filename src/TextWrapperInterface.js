@@ -12,11 +12,22 @@ import Sample from './CalendarInterface.js';
 import CalendarInterface from './CalendarInterface.js';
 
 // The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
+// 
+
+function Arrow(){
+
+}
+
 
 function TextWrapperInterface() {
 
   return (
     <div>
+      <div id='navigation'><center>Hello! Welcome to DayScribe </center></div>
+      
+      <button> Previous Day</button>
+      <button> Next Day</button>
+      
       <QuillNotesEditor/>
       <CalendarInterface showCalendar={true} />
     </div>

@@ -35,24 +35,20 @@ export const QuillNotesEditor = () => {
 
   return (
     <div className = {styles.wrapper}>
-      <div id='navigation'><center>Hello! Welcome to DayScribe </center></div>
-      <button> Previous Day</button>
-      <button> Next Day</button>
-      
+   
       <QuillEditor 
         ref={quillRef}
         theme="snow" 
         value= {value}
         onChange = {(value)=> setValue(value)} 
       />
-      
-      <button onClick={ () => noteWriteRequest(currentDateStr, quillRef.current.getEditor().getContents())}> Update Note</button>
-      <button onClick={ () => getSpecificNote(currentDateStr)}> Retrieve Note</button>
-
 
   </div>
   );
 }
+      // old code to reference just in case (delete once left and right arrows are completed)
+      // <button onClick={ () => noteWriteRequest(currentDateStr, quillRef.current.getEditor().getContents())}> Update Note</button>
+      // <button onClick={ () => getSpecificNote(currentDateStr)}> Retrieve Note</button>
 
 // found in the npmjs react-quill documentation under methods:
 // "If you have a ref to a ReactQuill node, you will be able to invoke the following methods
