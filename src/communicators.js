@@ -138,6 +138,19 @@ export function fetchAllDates(month) {
     });
 }
 
+export function printDb() {
+    chrome.storage.local.get(null, function(returnedItems) {
+        if (chrome.runtime.lastError) {
+            console.error('Error retrieving all items from local storage in fetchAllDates call');
+            return { 'error': 'failed to retieve all items from local storage in fetchAllDates call' };
+        } else {
+            console.log('Successfully retrieved all objects from local storage!');
+            let itemKeys = Object.keys(returnedItems);
+            console.log(`${itemKeys}`);
+        }
+    });
+}
+
 export function fetchNoteSynced(dateKey) {
     
     chrome.storage.sync.get([dateKey], function(returnedDelta) {
