@@ -1,11 +1,7 @@
-/* global chrome */
-// Your code using chrome.storage and other chrome.* APIs
-
-
 /* CS 422 Winter 2024
 communicators.py
 Created by Luke Marshall 2/21/2024
-Last modified: 2/22/2024
+Last modified: 3/3/2024
 
 Containes functions which simplify the Chrome chrome.storage and Firefox browser.storage 
 API calls.
