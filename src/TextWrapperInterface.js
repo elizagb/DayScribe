@@ -12,6 +12,7 @@ import {noteWriteRequest} from './noteMaintenance.js'
 import CalendarInterface from './CalendarInterface.js';
 import previousArrow from './images/previousArrow.png'
 import nextArrow from './images/nextArrow.png'
+import calendarImage from './images/calendar-small.png'
 
 // The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
  
@@ -75,6 +76,26 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   )
 }
 
+function CalendarButton({currentDate}){
+  // on-click, request for valid months, then render calendar
+  // with populated date highlights
+  async function handleClick() {
+    try {
+      console.log("Calendar Clicked");
+      await getValidDates(currentDate);
+    }
+    catch (error){
+
+    }
+  }
+
+  return (
+    <button onClick={handleClick} className = "calendarButton">
+      <img src={calendarImage} alt= "calendar"/>
+    </button>
+  )
+}
+
 
 function TextWrapperInterface() {
   
@@ -82,16 +103,23 @@ function TextWrapperInterface() {
   // but will be changed to reflect the note of the "current date" 
   const [currentDate, setCurrentDate] = useState(currentDateStr);
 
+  // toggle for calendar to pop up (rendered component but hidden)
+  const [calendarShow, setCalendarShow] = useState(false);
+
   const updateCurrentDate = (newDate) => {
     setCurrentDate(newDate);
   }
 
-  // const quillEditor =<QuillNotesEditor/>;
   const quillRef = useRef(null);
 
   return (
     <div>
-      <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
+      
+      <div>
+        <CalendarButton/>
+
+        <center><h1>Hello! Welcome to DayScribe </h1></center>
+      </div>
       
       <div className = "navigationBar">
         <Arrow shiftDirection={-1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill={quillRef}/>

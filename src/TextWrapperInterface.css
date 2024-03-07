@@ -13,16 +13,16 @@
   align-items: center;
 }
 
+.noteID{
+  padding-left: 75px;
+  padding-right: 75px;
+}
+
 .directionalArrow{
   border: none;
   background-color: transparent;
   padding-left: 20px;
   padding-right: 20px;
-}
-
-.noteID{
-  padding-left: 75px;
-  padding-right: 75px;
 }
 
 .directionalArrow img {
@@ -31,4 +31,28 @@
   object-fit: fill;
   width: 25px;
   cursor: pointer;
+}
+
+.directionalArrow:hover {
+  background-color:gray
+}
+
+.calendarButton {
+  border: none;
+  background-color: transparent;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/*https://iconduck.com/icons/299856/calendar-small*/
+.calendarButton img {
+  border: none;
+  background-color: transparent;
+  object-fit: fill;
+  width: 25px;
+  cursor: pointer;
+}
+
+.calendarButton:hover {
+  background-color:gray
 }
