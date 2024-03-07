@@ -3,7 +3,7 @@
 // to help with converting between date formats across modules
 
 
-function tokenizeDate(date){
+export function tokenizeDate(date){
     // takes a string "MM/DD/YYYY", converting it to list of ints: [MM, DD, YYYY]
     const [month, day, year] = date.split('/');
     const retList = [parseInt(month, 10), parseInt(day, 10), parseInt(year, 10)]; 
@@ -11,13 +11,15 @@ function tokenizeDate(date){
   }
   
   
-function dateTokensToString(dateTokens){
-// takes a list of ints [MM, DD, YYYY], converting it to "MM/DD/YYYY"
+export function dateTokensToString(dateTokens){
+    // takes a list of ints [MM, DD, YYYY], converting it to "MM/DD/YYYY"
 
-return `${dateTokens[0].toString().padStart(2, '0')}/${dateTokens[1].toString().padStart(2, '0')}/${dateTokens[2]}`;
-}
+    return `${dateTokens[0].toString().padStart(2, '0')}/${dateTokens[1].toString().padStart(2, '0')}/${dateTokens[2]}`;
+    }
   
-function getNextDate(date, shiftDirection){
+export function getNextDate(date, shiftDirection){
+    // takes a date in "MM/DD/YYYY" format, tokenize to make into a Date() object
+    // and shifts it +/- 1 day with implicit handling for boundaries
 
     let dateTokens = tokenizeDate(date);
     // note: month is only one zero indexed 
@@ -30,4 +32,11 @@ function getNextDate(date, shiftDirection){
     // return in "MM/DD/YYYY" format
     return fetchDateStr;
 }
+
+export function formatDelta(delta) {
+    // from quilljs.com/docs/delta/
+    // for debugging --> printing delta objects in readable format
+
+    return `${JSON.stringify(delta.ops, null, 2)}`;
+  }
 

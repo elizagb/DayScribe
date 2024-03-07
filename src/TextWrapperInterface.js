@@ -24,19 +24,6 @@ const day = currentDate.getDate();
 //format 'mm/dd/yyyy'
 const currentDateStr = `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
 
-function dateTokensToString(dateTokens){
-  // takes a list of ints [MM, DD, YYYY], converting it to "MM/DD/YYYY"
-  
-  return `${dateTokens[0].toString().padStart(2, '0')}/${dateTokens[1].toString().padStart(2, '0')}/${dateTokens[2]}`;
-}
-
-function tokenizeDate(date){
-  // takes a string "MM/DD/YYYY", converting it to list of ints: [MM, DD, YYYY]
-  const [month, day, year] = date.split('/');
-  const retList = [parseInt(month, 10), parseInt(day, 10), parseInt(year, 10)]; 
-  return retList;
-}
-
 
 function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   // shiftDirection an enumerated value determining direction of button
@@ -70,7 +57,7 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
       }
 
       else{
-        console.log(`No existing Delta for ${currentDate}`);
+        quill.current.getEditor().setContents( new Delta());
       }
       return;
     
