@@ -84,9 +84,9 @@ function CalendarButton({currentDate}){
     try {
       console.log("Calendar Clicked");
       let returnDates = await getValidDates(currentDate);
-      // convert all calendar entries s.t. calendarInterface has
-      // highlighDates = [Date objects]
-    
+      console.log(`returned Date objects: ${returnDates}`);
+
+      // now update calendar --> toggle view and repopulate selected dates
     }
     catch (error){
       console.log("calendar button error");

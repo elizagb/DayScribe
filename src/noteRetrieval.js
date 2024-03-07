@@ -41,7 +41,15 @@ export async function getValidDates(date){
         console.log("date:", date, "month:", date.slice(0,2));   
         let returnDates = await fetchAllDates(date.slice(0,2));
         console.log(`noteRetrieval returned dates: ${returnDates}`);
-        resolve(returnDates);
+        let convertedDates = []
+        // convert these into Date objects for CalendarInterface
+        for (let i = 0; i < returnDates.length; i++){
+          convertedDates.push(
+            new Date(returnDates[i].slice(4,), returnDates[i].slice(0,2)-1, returnDates[i].slice(2,4))
+            );
+        }
+        
+        resolve(convertedDates);
       }
       catch (error){
         reject(error);
