@@ -121,7 +121,8 @@ export function fetchNote(dateKey) {
 function inMonth(month, dates) {
     let inMo = [];
     for (const date of dates) {
-        if (date.month == month) {
+        // if (date.month == month) {
+        if (date.slice(0,2) == month) {
             inMo.push(date);
         }
     }

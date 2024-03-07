@@ -77,15 +77,19 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
 }
 
 function CalendarButton({currentDate}){
-  // on-click, request for valid months, then render calendar
+  // on-click, request for populated dates of month, then render calendar
   // with populated date highlights
+  // getValidDates --> getPopulatedDates()?
   async function handleClick() {
     try {
       console.log("Calendar Clicked");
-      await getValidDates(currentDate);
+      let returnDates = await getValidDates(currentDate);
+      // convert all calendar entries s.t. calendarInterface has
+      // highlighDates = [Date objects]
+    
     }
     catch (error){
-
+      console.log("calendar button error");
     }
   }
 
@@ -116,7 +120,7 @@ function TextWrapperInterface() {
     <div>
       
       <div>
-        <CalendarButton/>
+        <CalendarButton currentDate = {currentDate}/>
 
         <center><h1>Hello! Welcome to DayScribe </h1></center>
       </div>

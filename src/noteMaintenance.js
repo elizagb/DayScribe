@@ -9,8 +9,8 @@ export function noteWriteRequest(date, note){
   // using the given date and note (which is a Delta object)
   let formattedDate = date.replaceAll("/", ""); 
   // let testDate = "03032024"; 
-  const testDelta = new Delta().insert('This is a delta object');  
-  console.log(`testDelta: ${formatDelta(testDelta)}\n`);
+  // const testDelta = new Delta().insert('This is a delta object');  
+  // console.log(`testDelta: ${formatDelta(testDelta)}\n`);
   // writeNote(testDate, note);
   
   console.log(`input note val: ${formatDelta(note)}\n`);
