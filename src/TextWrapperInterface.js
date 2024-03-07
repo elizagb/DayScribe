@@ -89,8 +89,10 @@ function CalendarButton({currentDate}){
       setCalendarShow(!calendarShow);
 
       console.log("Calendar Clicked");
-      returnDates = await getValidDates(currentDate);
-      console.log(`returned Date objects: ${returnDates}`);
+      // returnDates = await getValidDates(currentDate);
+
+      // set highlight dates here?
+      // console.log(`returned Date objects: ${returnDates}`);
 
       // now update calendar --> toggle view and repopulate selected dates
     }
@@ -106,7 +108,7 @@ function CalendarButton({currentDate}){
       </button>
       <div>
       {calendarShow && 
-      <CalendarInterface showCalendar = {true} populatedDates = {returnDates}/>
+      <CalendarInterface showCalendar = {true} />
       }
 
       </div>

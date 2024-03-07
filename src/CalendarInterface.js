@@ -13,7 +13,7 @@ import 'react-calendar/dist/Calendar.css';
 // sendStoredNotes: function that returns list of dates to highlight green (days w stored notes)
 // import { updateTextEditor, sendStoredDates } from './update.js'; 
 
-const CalendarInterface = ({ showCalendar, populatedDates }) => {
+const CalendarInterface = ({ showCalendar }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   // TODO: uncomment this when date array is imported, not hardcoded
   const [highlightDates, setHighlightDates] = useState([]);
@@ -22,7 +22,12 @@ const CalendarInterface = ({ showCalendar, populatedDates }) => {
 
   // TODO: uncomment this when date array is imported, not hardcoded
   // useEffect(() => {
-  //   setHighlightDates(populatedDates);
+  //   if (populatedDates !== null){
+  //     setHighlightDates(populatedDates);
+  //   }
+  //   else {
+  //     console.log('populatedDates is empty');
+  //   }
   // }, []);
 
   const handleDateClick = (selectedDate) => {
@@ -32,6 +37,13 @@ const CalendarInterface = ({ showCalendar, populatedDates }) => {
     // EXAMPLE: call function that updates text editor given new selected date 
     // updateTextEditor(selectedDate);
   };
+
+  // make a function that fetches the dates using getValidDates(date)
+  // which means it needs a reference to date? 
+  // Maybe state is initialized to the currentDate state from TextWrapper,
+  // but then this internal state is updated
+
+
 
   const tileClassName = ({ date }) => {
     return highlightDates.some((highlightDate) => {
