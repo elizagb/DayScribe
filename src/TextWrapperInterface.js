@@ -12,6 +12,7 @@ import {noteWriteRequest} from './noteMaintenance.js'
 import CalendarInterface from './CalendarInterface.js';
 import previousArrow from './images/previousArrow.png'
 import nextArrow from './images/nextArrow.png'
+import calendarImage from './images/calendar-small.png'
 
 // The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
  
@@ -80,11 +81,15 @@ function CalendarButton({currentDate}){
   // with populated date highlights
   // getValidDates --> getPopulatedDates()?
 
-
+  // toggle for calendar to pop up (rendered component but hidden)
+  const [calendarShow, setCalendarShow] = useState(false);
+  let returnDates = null
   async function handleClick() {
     try {
+      setCalendarShow(!calendarShow);
+
       console.log("Calendar Clicked");
-      let returnDates = await getValidDates(currentDate);
+      returnDates = await getValidDates(currentDate);
       console.log(`returned Date objects: ${returnDates}`);
 
       // now update calendar --> toggle view and repopulate selected dates
@@ -95,10 +100,17 @@ function CalendarButton({currentDate}){
   }
 
   return (
-    <button onClick={handleClick} className = "calendarButton">
-      <CalendarInterface showCalendar = {false}/>
-      <img src={calendarImage} alt= "calendar"/>
-    </button>
+    <div>
+      <button onClick={handleClick} className = "calendarButton">
+        <img src={calendarImage} alt= "calendar"/>
+      </button>
+      <div>
+      {calendarShow && 
+      <CalendarInterface showCalendar = {true} populatedDates = {returnDates}/>
+      }
+
+      </div>
+    </div>
   )
 }
 
@@ -114,7 +126,7 @@ function TextWrapperInterface() {
   }
 
   // toggle for calendar to pop up (rendered component but hidden)
-  const [calendarShow, setCalendarShow] = useState(false);
+  // const [calendarShow, setCalendarShow] = useState(false);
 
 
   const quillRef = useRef(null);

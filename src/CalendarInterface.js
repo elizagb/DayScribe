@@ -13,21 +13,16 @@ import 'react-calendar/dist/Calendar.css';
 // sendStoredNotes: function that returns list of dates to highlight green (days w stored notes)
 // import { updateTextEditor, sendStoredDates } from './update.js'; 
 
-const CalendarInterface = ({ showCalendar }) => {
+const CalendarInterface = ({ showCalendar, populatedDates }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   // TODO: uncomment this when date array is imported, not hardcoded
-  // const [highlightDates, setHighlightDates] = useState([]);
+  const [highlightDates, setHighlightDates] = useState([]);
   
   // Hard-coded date values
-  const highlightDates = [
-    new Date(2024, 1, 2), // February 2, 2024
-    new Date(2024, 1, 5), // February 5, 2024
-    // Add more dates as needed
-  ];
 
   // TODO: uncomment this when date array is imported, not hardcoded
   // useEffect(() => {
-  //   setHighlightDates(sendStoredDates());
+  //   setHighlightDates(populatedDates);
   // }, []);
 
   const handleDateClick = (selectedDate) => {
