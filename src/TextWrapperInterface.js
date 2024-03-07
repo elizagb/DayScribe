@@ -67,6 +67,8 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
 
         // TODO: update Quill Editor
         if (returnDelta !== undefined) {
+          console.log("what is the quill object?", quill)
+          console.log("what is the quill.current object?", quill.current)
           // quill.current.getEditor().setContents(returnDelta);
           //quill.current.setContents(returnDelta);
           const testDelta = new Delta().insert('testDelta in Arrow');
@@ -111,6 +113,9 @@ function TextWrapperInterface() {
     <div>
       <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
       
+
+      <QuillNotesEditor ref={quillRef} />
+      
       <div className = "navigationBar">
         <Arrow shiftDirection={-1} currentDate = {currentDate} 
           updateDate = {updateCurrentDate} quill={quillRef}/>
@@ -119,7 +124,7 @@ function TextWrapperInterface() {
           updateDate = {updateCurrentDate} quill= {quillRef}/>
       </div>
       
-      <QuillNotesEditor ref={quillRef} /> 
+       
 
       <button onClick={ () => noteWriteRequest('03022024', null)}> Update Note</button>
       <CalendarInterface showCalendar={true} />

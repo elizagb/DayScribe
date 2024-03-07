@@ -28,9 +28,9 @@ function Arrow(dateKey, quill, dateShift){
 }
 
 
-export const QuillNotesEditor = () => {
+export const QuillNotesEditor = React.forwardRef((props, ref) => {
   const [value, setValue] = useState('');
-  const quillRef = useRef(null);  // get a reference to the quill editor we create
+  // const quillRef = useRef(null);  // get a reference to the quill editor we create
   // this "ref" object is accessed by quillRef.current attribute
 
   // TODO: needs to use noteWriteRequest() to create/obtain the note from today
@@ -39,15 +39,25 @@ export const QuillNotesEditor = () => {
     <div className = {styles.wrapper}>
    
       <QuillEditor 
-        ref={quillRef}
+        ref={ref}
         theme="snow" 
         value= {value}
         onChange = {(value)=> setValue(value)} 
       />
-
+    <button onClick={ () => {
+      console.log(ref)
+      ref.current.getEditor().setContents(new Delta().insert('tested Delta'))
+    }}> quillReference</button>
+      
   </div>
   );
-}
+});
+
+// <button onClick={ () => {
+//       console.log(quillRef)
+//       quillRef.current.getEditor().setContents(new Delta().insert('tested Delta'))
+//     }}> quillReference</button>
+
       // old code to reference just in case (delete once left and right arrows are completed)
       // <button onClick={ () => noteWriteRequest(currentDateStr, quillRef.current.getEditor().getContents())}> Update Note</button>
       // <button onClick={ () => getSpecificNote(currentDateStr)}> Retrieve Note</button>
