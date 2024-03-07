@@ -12,7 +12,6 @@ import {noteWriteRequest} from './noteMaintenance.js'
 import CalendarInterface from './CalendarInterface.js';
 import previousArrow from './images/previousArrow.png'
 import nextArrow from './images/nextArrow.png'
-import calendarImage from './images/calendar-small.png'
 
 // The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
  
@@ -80,6 +79,8 @@ function CalendarButton({currentDate}){
   // on-click, request for populated dates of month, then render calendar
   // with populated date highlights
   // getValidDates --> getPopulatedDates()?
+
+
   async function handleClick() {
     try {
       console.log("Calendar Clicked");
@@ -95,6 +96,7 @@ function CalendarButton({currentDate}){
 
   return (
     <button onClick={handleClick} className = "calendarButton">
+      <CalendarInterface showCalendar = {false}/>
       <img src={calendarImage} alt= "calendar"/>
     </button>
   )
@@ -107,23 +109,20 @@ function TextWrapperInterface() {
   // but will be changed to reflect the note of the "current date" 
   const [currentDate, setCurrentDate] = useState(currentDateStr);
 
-  // toggle for calendar to pop up (rendered component but hidden)
-  const [calendarShow, setCalendarShow] = useState(false);
-
   const updateCurrentDate = (newDate) => {
     setCurrentDate(newDate);
   }
+
+  // toggle for calendar to pop up (rendered component but hidden)
+  const [calendarShow, setCalendarShow] = useState(false);
+
 
   const quillRef = useRef(null);
 
   return (
     <div>
-      
-      <div>
-        <CalendarButton currentDate = {currentDate}/>
-
-        <center><h1>Hello! Welcome to DayScribe </h1></center>
-      </div>
+      <CalendarButton currentDate = {currentDate}/>
+      <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
       
       <div className = "navigationBar">
         <Arrow shiftDirection={-1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill={quillRef}/>
@@ -134,7 +133,7 @@ function TextWrapperInterface() {
       <QuillNotesEditor ref={quillRef} /> 
 
       <button onClick={ () => noteWriteRequest(currentDate, quillRef.current.getEditor().getContents())}> Update Note</button>
-      <CalendarInterface showCalendar={true} />
+
     </div>
   )
 }
