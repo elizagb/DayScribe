@@ -1,5 +1,5 @@
 import Delta from 'quill-delta';
-import { writeNote,fetchNote, removeNote, printDb } from './communicators.js';
+import { clearCalendar, writeNote,fetchNote, removeNote, printDb, fetchAllDates } from './communicators.js';
 import {tokenizeDate, dateTokensToString, getNextDate, formatDelta} from './eventHandlerHelpers.js'
 
 // soon to possibly get passed a reference to the quill editor so that we can
@@ -30,10 +30,30 @@ export async function getSpecificNote(dateString, shiftDirection){
 
     });
     
-
 }
 
 
-export function getValidDates(date){
+export async function getValidDates(date){
     // for calendar functionality: populating calendar with dates
+    return new Promise(async (resolve, reject) => {
+      console.log(`getValidDates called for ${date}`);
+      try {
+        console.log("date:", date, "month:", date.slice(0,2));   
+        let returnDates = await fetchAllDates(date.slice(0,2));
+        console.log(`noteRetrieval returned dates: ${returnDates}`);
+        let convertedDates = []
+        // convert these into Date objects for CalendarInterface
+        for (let i = 0; i < returnDates.length; i++){
+          convertedDates.push(
+            new Date(returnDates[i].slice(4,), returnDates[i].slice(0,2)-1, returnDates[i].slice(2,4))
+            );
+        }
+        
+        resolve(convertedDates);
+      }
+      catch (error){
+        reject(error);
+      }
+    });
+
 }
