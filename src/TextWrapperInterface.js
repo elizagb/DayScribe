@@ -75,6 +75,34 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   )
 }
 
+<<<<<<< Updated upstream
+=======
+function CalendarButton({currentDate}){
+  // on-click, request for populated dates of month, then render calendar
+  // with populated date highlights
+  // getValidDates --> getPopulatedDates()?
+  async function handleClick() {
+    try {
+      console.log("Calendar Clicked");
+      let returnDates = await getValidDates(currentDate);
+      console.log(`returned Date objects: ${returnDates}`);
+
+      // now update calendar --> toggle view and repopulate selected dates
+    }
+    catch (error){
+      console.log("calendar button error");
+    }
+  }
+
+  return (
+    <button onClick={handleClick} className = "calendarButton">
+      <CalendarInterface showCalendar = {false}/>
+      <img src={calendarImage} alt= "calendar"/>
+    </button>
+  )
+}
+
+>>>>>>> Stashed changes
 
 function TextWrapperInterface() {
   
