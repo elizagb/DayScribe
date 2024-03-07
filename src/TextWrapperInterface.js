@@ -38,7 +38,6 @@ function tokenizeDate(date){
 }
 
 
-// function Arrow({shiftDirection, currentDate, updateDate, quill}) {
 function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   // shiftDirection an enumerated value determining direction of button
   // -1 ==> left arrow, 1 ==> right arrow
@@ -60,33 +59,27 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
     // needs to find the requested day, 
     // and set the quill editor's note 
 
-      try {
-        let [returnDate, returnDelta] =  await(getSpecificNote(currentDate, shiftDirection));
-        console.log("handleClick:", returnDate, returnDelta);
-        updateDate(returnDate);  // update state for date
+    try {
+      let [returnDate, returnDelta] =  await(getSpecificNote(currentDate, shiftDirection));
+      console.log("handleClick:", returnDate, returnDelta);
+      updateDate(returnDate);  // update state for date
 
-        // TODO: update Quill Editor
-        if (returnDelta !== undefined) {
-          console.log("what is the quill object?", quill)
-          console.log("what is the quill.current object?", quill.current)
-          // quill.current.getEditor().setContents(returnDelta);
-          //quill.current.setContents(returnDelta);
-          const testDelta = new Delta().insert('testDelta in Arrow');
-          quill.current.getEditor().setContents(testDelta);
-        
+      if (returnDelta !== undefined) {  
+        // update the quill editor if there's a populated note
+        quill.current.getEditor().setContents(returnDelta);
+      }
 
-        }
-        else{
-          console.log("No existing Delta for this day.");
-        }
-        return;
-      
+      else{
+        console.log(`No existing Delta for ${currentDate}`);
       }
-      catch (error){
-          console.log(`Handle click error: didn't pass the try block`);
-      }
-      
+      return;
+    
     }
+    catch (error){
+        console.log(`Handle click error: didn't pass the try block`);
+    }
+    
+  }
 
   return (
   <button onClick={handleClick} className = "directionalArrow">
@@ -113,20 +106,15 @@ function TextWrapperInterface() {
     <div>
       <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
       
-
-      <QuillNotesEditor ref={quillRef} />
-      
       <div className = "navigationBar">
-        <Arrow shiftDirection={-1} currentDate = {currentDate} 
-          updateDate = {updateCurrentDate} quill={quillRef}/>
+        <Arrow shiftDirection={-1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill={quillRef}/>
         <h2 className = "noteID"> Note for: {currentDate}</h2>
-        <Arrow shiftDirection={1} currentDate = {currentDate} 
-          updateDate = {updateCurrentDate} quill= {quillRef}/>
+        <Arrow shiftDirection={1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill= {quillRef}/>
       </div>
       
-       
+      <QuillNotesEditor ref={quillRef} /> 
 
-      <button onClick={ () => noteWriteRequest('03022024', null)}> Update Note</button>
+      <button onClick={ () => noteWriteRequest(currentDate, quillRef.current.getEditor().getContents())}> Update Note</button>
       <CalendarInterface showCalendar={true} />
     </div>
   )

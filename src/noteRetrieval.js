@@ -28,27 +28,27 @@ export async function getSpecificNote(dateString, shiftDirection){
     // worry about boundary logic like Jan 1st to Dec 31st, etc.
     return new Promise(async (resolve, reject) => {
 
-        console.log(`\ngetSpecificNote called with date: ${dateString}\n`);
-    
-        let dateTokens = tokenizeDate(dateString);
-        // note: month is only one zero indexed (so awesome)
-        let currDate = new Date(dateTokens[2], dateTokens[0]-1, dateTokens[1]);
-        currDate.setDate(currDate.getDate() + shiftDirection);
-        let fetchDate = [currDate.getMonth() + 1, currDate.getDate(), currDate.getFullYear()];
-        // source: https://www.geeksforgeeks.org/how-to-calculate-the-yesterdays-date-in-javascript/a
-        let fetchDateStr = dateTokensToString(fetchDate);
-        
-        let formattedDate = fetchDateStr.replaceAll("/", ""); 
-        try {
-            let returnDelta = await fetchNote(formattedDate);
-            console.log(`return Delta = ${returnDelta}\n`);
-            resolve([fetchDateStr, returnDelta]);
-    
-        }
-        catch (error){
-            console.log(`fetch error: didn't pass the try block`);
-            reject(error);
-        }
+      console.log(`\ngetSpecificNote called with date: ${dateString}\n`);
+  
+      let dateTokens = tokenizeDate(dateString);
+      // note: month is only one zero indexed (so awesome)
+      let currDate = new Date(dateTokens[2], dateTokens[0]-1, dateTokens[1]);
+      currDate.setDate(currDate.getDate() + shiftDirection);
+      let fetchDate = [currDate.getMonth() + 1, currDate.getDate(), currDate.getFullYear()];
+      // source: https://www.geeksforgeeks.org/how-to-calculate-the-yesterdays-date-in-javascript/a
+      let fetchDateStr = dateTokensToString(fetchDate);
+      
+      let formattedDate = fetchDateStr.replaceAll("/", ""); 
+      try {
+          let returnDelta = await fetchNote(formattedDate);
+          console.log(`return Delta = ${returnDelta}\n`);
+          resolve([fetchDateStr, returnDelta]);
+  
+      }
+      catch (error){
+          console.log(`fetch error: didn't pass the try block`);
+          reject(error);
+      }
 
     })
     

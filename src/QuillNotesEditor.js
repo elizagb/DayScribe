@@ -22,11 +22,6 @@ const day = currentDate.getDate();
 //format 'yyyymmdd'
 const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
 
-function Arrow(dateKey, quill, dateShift){
-  // to be filled in and modified from App_old.js 
-
-}
-
 
 export const QuillNotesEditor = React.forwardRef((props, ref) => {
   const [value, setValue] = useState('');
@@ -44,10 +39,6 @@ export const QuillNotesEditor = React.forwardRef((props, ref) => {
         value= {value}
         onChange = {(value)=> setValue(value)} 
       />
-    <button onClick={ () => {
-      console.log(ref)
-      ref.current.getEditor().setContents(new Delta().insert('tested Delta'))
-    }}> quillReference</button>
       
   </div>
   );
