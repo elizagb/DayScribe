@@ -76,7 +76,7 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   )
 }
 
-function CalendarButton({currentDate}){
+function CalendarButton({currentDate, quill}){
   // on-click, request for populated dates of month, then render calendar
   // with populated date highlights
   // getValidDates --> getPopulatedDates()?
@@ -108,7 +108,7 @@ function CalendarButton({currentDate}){
       </button>
       <div>
       {calendarShow && 
-      <CalendarInterface showCalendar = {true} />
+      <CalendarInterface quill= {quill} />
       }
 
       </div>
@@ -135,7 +135,7 @@ function TextWrapperInterface() {
 
   return (
     <div>
-      <CalendarButton currentDate = {currentDate}/>
+      <CalendarButton currentDate = {currentDate} quill = {quillRef}/>
       <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
       
       <div className = "navigationBar">

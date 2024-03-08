@@ -7,13 +7,14 @@ import './CalendarInterface.css';
 import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 
 // EXAMPLE: import necessary functions to be run when a date is selected 
 // updateTextEditor: func that causes new note to appear
 // sendStoredNotes: function that returns list of dates to highlight green (days w stored notes)
 // import { updateTextEditor, sendStoredDates } from './update.js'; 
 
-const CalendarInterface = ({ showCalendar }) => {
+const CalendarInterface = ({quill}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   // TODO: uncomment this when date array is imported, not hardcoded
   const [highlightDates, setHighlightDates] = useState([]);
@@ -30,10 +31,11 @@ const CalendarInterface = ({ showCalendar }) => {
   //   }
   // }, []);
 
-  const handleDateClick = (selectedDate) => {
+  async function handleDateClick(selectedDate){
     setSelectedDate(selectedDate);
-    // console.log(selectedDate);
-
+    console.log(selectedDate);
+    let [returnDate, returnDelta] = await(getSpecificNote(selectedDate, 0));
+    quill.current.getEditor().setContents(returnDelta);
     // EXAMPLE: call function that updates text editor given new selected date 
     // updateTextEditor(selectedDate);
   };
@@ -54,7 +56,6 @@ const CalendarInterface = ({ showCalendar }) => {
   };
 
   return (
-    showCalendar && (
       <div className="Sample">
         <div className="Sample__container">
           <main className="Sample__container__content">
@@ -66,7 +67,6 @@ const CalendarInterface = ({ showCalendar }) => {
           </main>
         </div>
       </div>
-    )
   );
 }
 

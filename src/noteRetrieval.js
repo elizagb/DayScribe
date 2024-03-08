@@ -7,14 +7,20 @@ import {tokenizeDate, dateTokensToString, getNextDate, formatDelta} from './even
 // ** We will need to know how THE SYSTEM knows which date's note we are modifyinga **
 
 
-export async function getSpecificNote(dateString, shiftDirection){
+export async function getSpecificNote(date, shiftDirection){
   // fetches the next note in the direction specified by shiftDirection
 
     return new Promise(async (resolve, reject) => {
 
-      console.log(`\ngetSpecificNote called with date: ${dateString}\n`);
-  
-      let fetchDateStr = getNextDate(dateString, shiftDirection);     
+      console.log(`\ngetSpecificNote called with date: ${date}\n`);
+      if (date instanceof Date){
+        // if date Object, convert to a 
+        
+        date = [date.getMonth()+1, date.getDate(), date.getFullYear()]; 
+        date = dateTokensToString(date);
+      }
+
+      let fetchDateStr = getNextDate(date, shiftDirection);     
       
       // shift from "MM/DD/YYYY" to "MMDDYYYY" as stored in the database
       let formattedDate = fetchDateStr.replaceAll("/", ""); 
