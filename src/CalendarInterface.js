@@ -4,43 +4,50 @@ Created by Eliza Black 2/25/2024
 Last modified: 3/4/2024
 */
 import './CalendarInterface.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo} from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 
-// EXAMPLE: import necessary functions to be run when a date is selected 
-// updateTextEditor: func that causes new note to appear
-// sendStoredNotes: function that returns list of dates to highlight green (days w stored notes)
-// import { updateTextEditor, sendStoredDates } from './update.js'; 
 
-const CalendarInterface = ({quill, updateDate}) => {
+async function getInitialDates(startDate){
+  
+  try{
+    // take "MM/DD/YYYY" to date
+    let startDateObject= new Date(startDate.slice(6,), startDate.slice(0,2)-1, startDate.slice(3,5));
+    let initialDates = await getValidDates(startDateObject);
+    return initialDates;
+  }
+  catch (error){
+    console.log("getInitialDates error");
+  }
+}
+
+
+const CalendarInterface = ({startDate, quill, updateDate}) => {
   const [selectedDate, setSelectedDate] = useState(null);
-  // TODO: uncomment this when date array is imported, not hardcoded
   const [highlightDates, setHighlightDates] = useState([]);
   
-  // Hard-coded date values
+  // figure out which dates of the month are populated on first render
+  useEffect(() => {
+    const firstRenderDates = async () => {
+      try {
+        let initialDates = await getInitialDates(startDate);
+        setHighlightDates(initialDates); 
+      }
+      catch (error) {
+        console.log("getting Initial dates failed");
+      }
+    } 
+    firstRenderDates();
+  }, [startDate]); 
 
-  // TODO: uncomment this when date array is imported, not hardcoded
-  // useEffect(() => {
-  //   if (populatedDates !== null){
-  //     setHighlightDates(populatedDates);
-  //   }
-  //   else {
-  //     console.log('populatedDates is empty');
-  //   }
-  // }, []);
 
   async function handleNavigation(actionContext){
     // actionContext returns an Object (dict), including label to which navigation event triggered this handler
     // and a Date object of first date of that month (and year)
-
-
     console.log("onClick action: ", actionContext);
-    // console.log("newcurrent date" , actionContext["activeStartDate"]);
-    // if (action === "prev" || action ==="next"){
-      
-    //}
+    
     try {
       let returnedDates = await getValidDates(actionContext["activeStartDate"]);
       console.log("setting highlight dates for: ", returnedDates);
@@ -69,6 +76,8 @@ const CalendarInterface = ({quill, updateDate}) => {
     }) ? 'highlight' : null;
   };
 
+
+  
 
   return (
       <div className="Sample">

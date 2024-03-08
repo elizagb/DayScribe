@@ -82,19 +82,14 @@ function CalendarButton({currentDate, quill, updateDate}){
 
   // toggle for calendar to pop up (rendered component but hidden)
   const [calendarShow, setCalendarShow] = useState(false);
-  let returnDates = null
+  let returnDates = null;
+  
   async function handleClick() {
     try {
       setCalendarShow(!calendarShow);
-
       console.log("Calendar Clicked");
-      // returnDates = await getValidDates(currentDate);
-
-      // set highlight dates here?
-      // console.log(`returned Date objects: ${returnDates}`);
-
-      // now update calendar --> toggle view and repopulate selected dates
     }
+
     catch (error){
       console.log("calendar button error");
     }
@@ -107,7 +102,7 @@ function CalendarButton({currentDate, quill, updateDate}){
       </button>
       <div>
       {calendarShow && 
-      <CalendarInterface quill= {quill} updateDate = {updateDate}/>
+      <CalendarInterface startDate = {currentDate} quill= {quill} updateDate = {updateDate}/>
       }
 
       </div>
