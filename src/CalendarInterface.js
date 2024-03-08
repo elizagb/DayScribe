@@ -59,6 +59,9 @@ const CalendarInterface = ({startDate, quill, updateDate}) => {
   }
 
   async function handleDateClick(selectedDate){
+    // needs to find the date associated to current note, then save it (if non-empty)
+    
+    
     setSelectedDate(selectedDate);
     console.log(selectedDate);
     let [returnDate, returnDelta] = await(getSpecificNote(selectedDate, 0));

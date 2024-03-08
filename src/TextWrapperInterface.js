@@ -44,9 +44,20 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   }
 
   async function handleClick() {
-    // finds the requested day and sets the quill editor's note 
-
+    // Save the current note if non-empty, then fetch next note
+    // from the requested day and sets the quill editor's note 
     try {
+      let currentText = await quill.current.getEditor().getText();
+      
+      
+      if (currentText.length > 1){
+        // ** can't just check the length of the ops of a Delta object, bc each delta object is "nonempty"  
+        // console.log("currentText (",currentText.length, "):", currentText);
+        let currentDelta = await quill.current.getEditor().getContents();
+        // console.log("currentDelta:", currentDelta);
+        noteWriteRequest(currentDate, currentDelta);
+      }
+      
       let [returnDate, returnDelta] =  await(getSpecificNote(currentDate, shiftDirection));
       console.log("handleClick:", returnDate, returnDelta);
       updateDate(returnDate);  // update state for date
