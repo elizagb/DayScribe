@@ -24,7 +24,7 @@ async function getInitialDates(startDate){
 }
 
 
-const CalendarInterface = ({startDate, quill, updateDate}) => {
+const CalendarInterface = ({currentDate, quill, updateDate}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [highlightDates, setHighlightDates] = useState([]);
   
@@ -32,7 +32,7 @@ const CalendarInterface = ({startDate, quill, updateDate}) => {
   useEffect(() => {
     const firstRenderDates = async () => {
       try {
-        let initialDates = await getInitialDates(startDate);
+        let initialDates = await getInitialDates(currentDate);
         setHighlightDates(initialDates); 
       }
       catch (error) {
@@ -40,10 +40,10 @@ const CalendarInterface = ({startDate, quill, updateDate}) => {
       }
     } 
     firstRenderDates();
-  }, [startDate]); 
+  }, [currentDate]); 
 
 
-  async function handleNavigation(actionContext){
+  async function handleNavigationArrows(actionContext){
     // actionContext returns an Object (dict), including label to which navigation event triggered this handler
     // and a Date object of first date of that month (and year)
     console.log("onClick action: ", actionContext);
@@ -61,6 +61,8 @@ const CalendarInterface = ({startDate, quill, updateDate}) => {
   async function handleDateClick(selectedDate){
     // needs to find the date associated to current note, then save it (if non-empty)
     
+    // console.log("Current date on handleDateClick:", startDate);
+    let currentText = await quill.current.getEditor().getText();
     
     setSelectedDate(selectedDate);
     console.log(selectedDate);
@@ -88,7 +90,7 @@ const CalendarInterface = ({startDate, quill, updateDate}) => {
           <main className="Sample__container__content">
             <Calendar
               onClickDay={handleDateClick}
-              onActiveStartDateChange={handleNavigation}
+              onActiveStartDateChange={handleNavigationArrows}
               value={selectedDate}
               tileClassName={tileClassName}
             />

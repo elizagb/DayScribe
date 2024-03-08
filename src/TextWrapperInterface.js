@@ -113,7 +113,7 @@ function CalendarButton({currentDate, quill, updateDate}){
       </button>
       <div>
       {calendarShow && 
-      <CalendarInterface startDate = {currentDate} quill= {quill} updateDate = {updateDate}/>
+      <CalendarInterface currentDate = {currentDate} quill= {quill} updateDate = {updateDate}/>
       }
 
       </div>
