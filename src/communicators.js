@@ -43,7 +43,7 @@ Firefox browser.storage using the same API calls.
 More information on Delta objects can be found at: https://quilljs.com/docs/delta/
 */
 
-/* global chrome */
+/* global chrome */ // notifies js that there is a global variable named chrome outside of the file
 
 //====================================================================================================================================================
 //---------------------------------------- Write Function ---------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ export function writeNote(dateKey, Delta, synced=false) {
         synced (bool): defaults to false, synced being set to true means that the delta is written 
         into the local and sync storage instead of only local when synced is set to false
         */
-    //setCorrectly (bool): boolean value set based on if each of the API calls is successful (true if successful, false if not)
+    // setCorrectly (bool): boolean value set based on if each of the API calls is successful (true if successful, false if not)
     let setCorrectly = true; // set in the individual .set calls to track if either fail and returning this finding
     // but allowing for both .set calls to proceed if synced is set to true
 
@@ -148,6 +148,7 @@ export function fetchAllDates(month) {
 
 export function printDb() {
     chrome.storage.local.get(null, function(returnedItems) {
+        // https://stackoverflow.com/questions/18150774/get-all-keys-from-chrome-storage
         if (chrome.runtime.lastError) {
             console.error('Error retrieving all items from local storage in fetchAllDates call');
             return { 'error': 'failed to retieve all items from local storage in fetchAllDates call' };
