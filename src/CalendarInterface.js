@@ -14,7 +14,7 @@ import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 // sendStoredNotes: function that returns list of dates to highlight green (days w stored notes)
 // import { updateTextEditor, sendStoredDates } from './update.js'; 
 
-const CalendarInterface = ({quill}) => {
+const CalendarInterface = ({quill, updateDate}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   // TODO: uncomment this when date array is imported, not hardcoded
   const [highlightDates, setHighlightDates] = useState([]);
@@ -31,20 +31,34 @@ const CalendarInterface = ({quill}) => {
   //   }
   // }, []);
 
+  async function handleNavigation(actionContext){
+    // actionContext returns an Object (dict), including label to which navigation event triggered this handler
+    // and a Date object of first date of that month (and year)
+
+
+    console.log("onClick action: ", actionContext);
+    // console.log("newcurrent date" , actionContext["activeStartDate"]);
+    // if (action === "prev" || action ==="next"){
+      
+    //}
+    try {
+      let returnedDates = await getValidDates(actionContext["activeStartDate"]);
+      console.log("setting highlight dates for: ", returnedDates);
+      setHighlightDates(returnedDates);
+    }
+    catch (error){
+      console.log("handleNavigation error");
+    }
+  }
+
   async function handleDateClick(selectedDate){
     setSelectedDate(selectedDate);
     console.log(selectedDate);
     let [returnDate, returnDelta] = await(getSpecificNote(selectedDate, 0));
     quill.current.getEditor().setContents(returnDelta);
-    // EXAMPLE: call function that updates text editor given new selected date 
-    // updateTextEditor(selectedDate);
+    updateDate(returnDate);
+    
   };
-
-  // make a function that fetches the dates using getValidDates(date)
-  // which means it needs a reference to date? 
-  // Maybe state is initialized to the currentDate state from TextWrapper,
-  // but then this internal state is updated
-
 
 
   const tileClassName = ({ date }) => {
@@ -55,12 +69,14 @@ const CalendarInterface = ({quill}) => {
     }) ? 'highlight' : null;
   };
 
+
   return (
       <div className="Sample">
         <div className="Sample__container">
           <main className="Sample__container__content">
             <Calendar
               onClickDay={handleDateClick}
+              onActiveStartDateChange={handleNavigation}
               value={selectedDate}
               tileClassName={tileClassName}
             />

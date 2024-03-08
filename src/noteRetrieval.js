@@ -41,12 +41,11 @@ export async function getSpecificNote(date, shiftDirection){
 
 export async function getValidDates(date){
     // for calendar functionality: populating calendar with dates
+    // takes a Date object, returns a list of Date objects
     return new Promise(async (resolve, reject) => {
       console.log(`getValidDates called for ${date}`);
       try {
-        console.log("date:", date, "month:", date.slice(0,2));   
-        let returnDates = await fetchAllDates(date.slice(0,2));
-        console.log(`noteRetrieval returned dates: ${returnDates}`);
+        let returnDates = await fetchAllDates(date.getMonth()+1);
         let convertedDates = []
         // convert these into Date objects for CalendarInterface
         for (let i = 0; i < returnDates.length; i++){

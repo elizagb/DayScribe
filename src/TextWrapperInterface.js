@@ -44,8 +44,7 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   }
 
   async function handleClick() {
-    // needs to find the requested day, 
-    // and set the quill editor's note 
+    // finds the requested day and sets the quill editor's note 
 
     try {
       let [returnDate, returnDelta] =  await(getSpecificNote(currentDate, shiftDirection));
@@ -76,7 +75,7 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
   )
 }
 
-function CalendarButton({currentDate, quill}){
+function CalendarButton({currentDate, quill, updateDate}){
   // on-click, request for populated dates of month, then render calendar
   // with populated date highlights
   // getValidDates --> getPopulatedDates()?
@@ -108,7 +107,7 @@ function CalendarButton({currentDate, quill}){
       </button>
       <div>
       {calendarShow && 
-      <CalendarInterface quill= {quill} />
+      <CalendarInterface quill= {quill} updateDate = {updateDate}/>
       }
 
       </div>
@@ -135,7 +134,7 @@ function TextWrapperInterface() {
 
   return (
     <div>
-      <CalendarButton currentDate = {currentDate} quill = {quillRef}/>
+      <CalendarButton currentDate = {currentDate} quill = {quillRef} updateDate = {updateCurrentDate}/>
       <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
       
       <div className = "navigationBar">
