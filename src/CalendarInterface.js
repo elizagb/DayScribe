@@ -8,6 +8,7 @@ import { useState, useEffect, useMemo} from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import {getSpecificNote, getValidDates} from './noteRetrieval.js'
+import {noteWriteRequest} from './noteMaintenance.js'
 
 
 async function getInitialDates(startDate){
@@ -58,10 +59,12 @@ const CalendarInterface = ({currentDate, quill, updateDate}) => {
     }
   }
 
+
   async function handleDateClick(selectedDate){
-    // needs to find the date associated to current note, then save it (if non-empty)
     
-    // console.log("Current date on handleDateClick:", startDate);
+    // call note maintenance handler to wy1rite note
+    noteWriteRequest(currentDate, quill);
+
     let currentText = await quill.current.getEditor().getText();
     
     setSelectedDate(selectedDate);
@@ -81,8 +84,6 @@ const CalendarInterface = ({currentDate, quill, updateDate}) => {
     }) ? 'highlight' : null;
   };
 
-
-  
 
   return (
       <div className="Sample">

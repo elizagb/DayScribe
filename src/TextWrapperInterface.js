@@ -47,16 +47,9 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
     // Save the current note if non-empty, then fetch next note
     // from the requested day and sets the quill editor's note 
     try {
-      let currentText = await quill.current.getEditor().getText();
       
-      
-      if (currentText.length > 1){
-        // ** can't just check the length of the ops of a Delta object, bc each delta object is "nonempty"  
-        // console.log("currentText (",currentText.length, "):", currentText);
-        let currentDelta = await quill.current.getEditor().getContents();
-        // console.log("currentDelta:", currentDelta);
-        noteWriteRequest(currentDate, currentDelta);
-      }
+      // call note maintenance handler to write note
+      noteWriteRequest(currentDate, quill);
       
       let [returnDate, returnDelta] =  await(getSpecificNote(currentDate, shiftDirection));
       console.log("handleClick:", returnDate, returnDelta);
@@ -150,8 +143,6 @@ function TextWrapperInterface() {
       </div>
       
       <QuillNotesEditor ref={quillRef} /> 
-
-      <button onClick={ () => noteWriteRequest(currentDate, quillRef.current.getEditor().getContents())}> Update Note</button>
 
     </div>
   )
