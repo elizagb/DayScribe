@@ -127,9 +127,13 @@ function TextWrapperInterface() {
 
   // toggle for calendar to pop up (rendered component but hidden)
   // const [calendarShow, setCalendarShow] = useState(false);
-
-
+  
   const quillRef = useRef(null);
+
+
+
+  
+
 
   return (
     <div>
@@ -142,8 +146,8 @@ function TextWrapperInterface() {
         <Arrow shiftDirection={1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill= {quillRef}/>
       </div>
       
-      <QuillNotesEditor ref={quillRef} currentDate = {currentDate} updateDate = {updateCurrentDate}/> 
-
+      <QuillNotesEditor ref={quillRef} currentDate = {currentDate} quill = {quillRef}/> 
+      <button onClick={ () => noteWriteRequest(currentDate, quillRef.current.getEditor().getContents())}> Update Note</button>
     </div>
   )
 }

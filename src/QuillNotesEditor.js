@@ -14,28 +14,40 @@ import styles from "./TextWrapperInterface.js";
 
 
 //get current date key
-const currentDate = new Date();
-const year = currentDate.getFullYear();
-const month = currentDate.getMonth() + 1;
-const day = currentDate.getDate();
+// const currentDate = new Date();
+// const year = currentDate.getFullYear();
+// const month = currentDate.getMonth() + 1;
+// const day = currentDate.getDate();
 
-//format 'yyyymmdd'
-const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
+// //format 'yyyymmdd'
+// const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
 
 
 export const QuillNotesEditor = React.forwardRef((props, ref) => {
   const [value, setValue] = useState('');
+
+
   // const quillRef = useRef(null);  // get a reference to the quill editor we create
   // this "ref" object is accessed by quillRef.current attribute
 
-  let {currentDate, updateDate} = props;
-  
-  // on render, fetch the current note
+  // console.log(ref);
+  // ref.current.getEditor().keyboard.addBinding({key: 'S', shortKey: true}, function(){
+  //     let savedDelta = ref.current.getEditor().getContents();
+  //     console.log("auto save triggered");
+  //     noteWriteRequest(currentDate, ref);
+  //   return false;
+  // })
+
+  let {currentDate, quill} = props;
+
+  // on render, fetch the current note, and set the keyboard shortcut for saving
   useEffect(() => {
     const firstRender = async () => {
       let [retDate, initialDelta] = await getSpecificNote(currentDate, 0);
       ref.current.getEditor().setContents(initialDelta);
-    }
+      
+    };
+
     firstRender();
     console.log("Initializing the Quill Editor");
   }, []);
