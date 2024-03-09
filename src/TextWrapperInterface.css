@@ -29,12 +29,12 @@
   border: none;
   background-color: transparent;
   object-fit: fill;
-  width: 25px;
+  width: 20px;
   cursor: pointer;
 }
 
 .directionalArrow:hover {
-  background-color:gray
+  background-color:lightblue
 }
 
 .calendarButton {
@@ -54,5 +54,5 @@
 }
 
 .calendarButton:hover {
-  background-color:gray
+  background-color:lightblue;
 }
