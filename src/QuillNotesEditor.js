@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import QuillEditor from "react-quill";
 import Delta from 'quill-delta';
 import Quill from 'quill';
@@ -28,7 +28,18 @@ export const QuillNotesEditor = React.forwardRef((props, ref) => {
   // const quillRef = useRef(null);  // get a reference to the quill editor we create
   // this "ref" object is accessed by quillRef.current attribute
 
-  // TODO: needs to use noteWriteRequest() to create/obtain the note from today
+  let {currentDate, updateDate} = props;
+  
+  // on render, fetch the current note
+  useEffect(() => {
+    const firstRender = async () => {
+      let [retDate, initialDelta] = await getSpecificNote(currentDate, 0);
+      ref.current.getEditor().setContents(initialDelta);
+    }
+    firstRender();
+    console.log("Initializing the Quill Editor");
+  }, []);
+
 
   return (
     <div className = {styles.wrapper}>

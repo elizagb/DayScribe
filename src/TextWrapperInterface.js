@@ -142,7 +142,7 @@ function TextWrapperInterface() {
         <Arrow shiftDirection={1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill= {quillRef}/>
       </div>
       
-      <QuillNotesEditor ref={quillRef} /> 
+      <QuillNotesEditor ref={quillRef} currentDate = {currentDate} updateDate = {updateCurrentDate}/> 
 
     </div>
   )
