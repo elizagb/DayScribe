@@ -30,12 +30,35 @@ const CalendarInterface = ({ showCalendar }) => {
   //   }
   // }, []);
 
-  const handleDateClick = (selectedDate) => {
-    setSelectedDate(selectedDate);
-    // console.log(selectedDate);
+  async function handleNavigationArrows(actionContext){
+    // actionContext returns an Object (dict), including label to which navigation event triggered this handler
+    // and a Date object of first date of that month (and year)
+    
+    try {
+      let returnedDates = await getValidDates(actionContext["activeStartDate"]);
+      console.log("setting highlight dates for: ", returnedDates);
+      setHighlightDates(returnedDates);
+    }
+    catch (error){
+      console.log("handleNavigation error");
+    }
+  }
 
-    // EXAMPLE: call function that updates text editor given new selected date 
-    // updateTextEditor(selectedDate);
+
+  async function handleDateClick(selectedDate){
+    
+    // call note maintenance handler to wy1rite note
+    //noteWriteRequest(currentDate, quill);
+
+    let currentText = await quill.current.getEditor().getText();
+    
+    setSelectedDate(selectedDate);
+    console.log("Selecting date on Calendar", selectedDate);
+    let [returnDate, returnDelta] = await(getSpecificNote(selectedDate, 0));
+    updateDate(returnDate);
+    quill.current.getEditor().setContents(returnDelta);
+    
+    
   };
 
   // make a function that fetches the dates using getValidDates(date)

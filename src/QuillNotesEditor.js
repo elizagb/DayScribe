@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import QuillEditor from "react-quill";
 import Delta from 'quill-delta';
 import Quill from 'quill';
@@ -13,22 +13,85 @@ import styles from "./TextWrapperInterface.js";
 // source: https://medium.com/@andrewkizito54/creating-a-rich-text-editor-using-react-and-react-quill-3ea990435ade
 
 
-//get current date key
-const currentDate = new Date();
-const year = currentDate.getFullYear();
-const month = currentDate.getMonth() + 1;
-const day = currentDate.getDate();
+// export const QuillNotesEditor = React.forwardRef((props, ref) => {
+//   const [value, setValue] = useState('');
+//   // const quillRef = useRef(null);  // get a reference to the quill editor we create
+//   // this "ref" object is accessed by quillRef.current attribute
+  
+//   let {currentDate} = props;
+  
+//   // on render, fetch the current note, and update note to storage
+//   useEffect(() => {
 
-//format 'yyyymmdd'
-const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
+//     const firstRender = async () => {
+//       let [retDate, initialDelta] = await getSpecificNote(currentDate, 0);
+//       ref.current.getEditor().setContents(initialDelta);
+//     }
+//     firstRender();
+//     console.log(props);
+//     noteWriteRequest(currentDate, ref);
+//   })
 
+//   return (
+//     <div className = {styles.wrapper}>
+   
+//       <QuillEditor 
+//         ref={ref}
+//         theme="snow" 
+//         value= {value}
+//         onChange = {(value)=> setValue(value)} 
+//       />
+      
+//   </div>
+//   );
+// });
 
 export const QuillNotesEditor = React.forwardRef((props, ref) => {
   const [value, setValue] = useState('');
   // const quillRef = useRef(null);  // get a reference to the quill editor we create
   // this "ref" object is accessed by quillRef.current attribute
+  
 
-  // TODO: needs to use noteWriteRequest() to create/obtain the note from today
+  // TODO: on navigation prompts, it saves the data from the target note into the "current" note
+  // before navigating away
+
+  let {currentDate, updateDate} = props;
+  
+  // on render, fetch the current note
+  useEffect(() => {
+    const firstRender = async () => {
+      let [retDate, initialDelta] = await getSpecificNote(currentDate, 0);
+      ref.current.getEditor().setContents(initialDelta);
+    }
+    firstRender();
+    console.log("Initializing the Quill Editor");
+  }, []);
+  // useEffect with an empty dependency array as above ensures this effect only happens 
+  // on initial render (preventing an infinite loop) 
+
+  const handleEditorChange = async (newVal) => {
+    // this function is a race-condition nightmare:
+    // if the currentDate is in a previous state but quill contents are updated to target date,
+    // the "updated contents" store to the previous date before navigating to target date.
+    // therefore duplicating the target note into the old "current" note. 
+    console.log(`handleEditorChange called: val: ${newVal}`);
+    if (ref && ref.current){
+      // weird issue with ref having a different value only on first time
+      // console.log("handleEditor change:", ref);
+      // let savedDate = currentDate;
+      // await updateDate(savedDate);
+      let updateDelta = await ref.current.getEditor().getContents();
+      
+      // same with updateDelta on first run
+      // console.log("delta?" , updateDelta);
+      await noteWriteRequest(currentDate, ref);
+      setValue(updateDelta);
+    }
+    else{
+      console.log("handleEditor error");
+    }
+  }
+
 
   return (
     <div className = {styles.wrapper}>
@@ -37,21 +100,12 @@ export const QuillNotesEditor = React.forwardRef((props, ref) => {
         ref={ref}
         theme="snow" 
         value= {value}
-        onChange = {(value)=> setValue(value)} 
+        onChange = {handleEditorChange} 
       />
       
   </div>
   );
 });
-
-// <button onClick={ () => {
-//       console.log(quillRef)
-//       quillRef.current.getEditor().setContents(new Delta().insert('tested Delta'))
-//     }}> quillReference</button>
-
-      // old code to reference just in case (delete once left and right arrows are completed)
-      // <button onClick={ () => noteWriteRequest(currentDateStr, quillRef.current.getEditor().getContents())}> Update Note</button>
-      // <button onClick={ () => getSpecificNote(currentDateStr)}> Retrieve Note</button>
 
 // found in the npmjs react-quill documentation under methods:
 // "If you have a ref to a ReactQuill node, you will be able to invoke the following methods

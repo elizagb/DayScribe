@@ -1,5 +1,5 @@
 
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import QuillNotesEditor from './QuillNotesEditor.js';
 import Quill from 'quill';
 import Delta from 'quill-delta';
@@ -48,10 +48,16 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
     // and set the quill editor's note 
 
     try {
+      
+      // call note maintenance handler to write note (unnecessary with per-keystroke save)
+      // noteWriteRequest(currentDate, quill);
+      // update date BEFORE setting the editor 
+      
+      
       let [returnDate, returnDelta] =  await(getSpecificNote(currentDate, shiftDirection));
-      console.log("handleClick:", returnDate, returnDelta);
-      updateDate(returnDate);  // update state for date
+      // console.log("handleClick:", returnDate, returnDelta);
 
+      updateDate(returnDate);  // update state for date
       if (returnDelta !== undefined) {  
         // update the quill editor if there's a populated note
         quill.current.getEditor().setContents(returnDelta);
@@ -123,15 +129,27 @@ function TextWrapperInterface() {
   // but will be changed to reflect the note of the "current date" 
   const [currentDate, setCurrentDate] = useState(currentDateStr);
 
+  const quillRef = useRef(null);
+  
   const updateCurrentDate = (newDate) => {
+    console.log("updatingCurrentDate");
     setCurrentDate(newDate);
   }
 
-  // toggle for calendar to pop up (rendered component but hidden)
-  // const [calendarShow, setCalendarShow] = useState(false);
+  // the 'unload' effect doesn't seem to exist for web extensions
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     event.preventDefault();
+  //     saveBeforeClosing();
+  //   };
 
-
-  const quillRef = useRef(null);
+  //   window.addEventListener('unload', saveBeforeClosing);
+    
+  //   return () => {
+  //     window.removeEventListener('unload', handleBeforeUnload);
+  //   }
+  // },[]); 
+ 
 
   return (
     <div>
@@ -144,7 +162,7 @@ function TextWrapperInterface() {
         <Arrow shiftDirection={1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill= {quillRef}/>
       </div>
       
-      <QuillNotesEditor ref={quillRef} /> 
+      <QuillNotesEditor ref={quillRef} currentDate = {currentDate} updateDate = {updateCurrentDate}/> 
 
       <button onClick={ () => noteWriteRequest(currentDate, quillRef.current.getEditor().getContents())}> Update Note</button>
 

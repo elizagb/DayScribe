@@ -12,15 +12,26 @@ export async function getSpecificNote(dateString, shiftDirection){
 
     return new Promise(async (resolve, reject) => {
 
-      console.log(`\ngetSpecificNote called with date: ${dateString}\n`);
-  
-      let fetchDateStr = getNextDate(dateString, shiftDirection);     
+      // console.log(`\ngetSpecificNote called with date: ${date}\n`);
+      if (date instanceof Date){
+        // if date Object, convert to a 
+        
+        date = [date.getMonth()+1, date.getDate(), date.getFullYear()]; 
+        date = dateTokensToString(date);
+      }
+
+      let fetchDateStr = getNextDate(date, shiftDirection);     
       
       // shift from "MM/DD/YYYY" to "MMDDYYYY" as stored in the database
       let formattedDate = fetchDateStr.replaceAll("/", ""); 
       try {
           let returnDelta = await fetchNote(formattedDate);
-          console.log(`getSpecificNote returning: ${returnDelta}\n`);
+
+          if (typeof(returnDelta) === undefined){
+            returnDelta = new Delta();
+          }
+
+          // console.log(`getSpecificNote returning: ${returnDelta}\n`);
           resolve([fetchDateStr, returnDelta]);
       }
       catch (error){
