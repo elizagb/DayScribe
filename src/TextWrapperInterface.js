@@ -139,7 +139,7 @@ function TextWrapperInterface() {
     }
 
     autosaveTimer = setInterval(async () => {
-      console.log("save timer triggered");
+      console.log("\n\nsave timer triggered");
       noteWriteRequest(currentDate, quillRef);
     }, interval);
   }
@@ -150,11 +150,13 @@ function TextWrapperInterface() {
   
     return () => {
       if (autosaveTimer !== null) {
+        console.log("save timer reset");
         clearInterval(autosaveTimer);
         autosaveTimer = null;
       }
     };
-  }, []);
+    // whenever the currentDate gets updated, we restart the timer
+  }, [currentDate]);
   
 
   return (
