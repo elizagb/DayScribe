@@ -1,5 +1,5 @@
 
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import QuillNotesEditor from './QuillNotesEditor.js';
 import Quill from 'quill';
 import Delta from 'quill-delta';
@@ -130,10 +130,32 @@ function TextWrapperInterface() {
   
   const quillRef = useRef(null);
 
+  let autosaveTimer = null;
 
+  function startSaveTimer(interval) {
+    if (autosaveTimer !== null){
+      console.log("TIMER ALREADY EXISTS: DON'T SET ANOTHER");
+      return;
+    }
 
+    autosaveTimer = setInterval(async () => {
+      console.log("save timer triggered");
+      noteWriteRequest(currentDate, quillRef);
+    }, interval);
+  }
+
+  useEffect(() => {
+
+    startSaveTimer(1000);
   
-
+    return () => {
+      if (autosaveTimer !== null) {
+        clearInterval(autosaveTimer);
+        autosaveTimer = null;
+      }
+    };
+  }, []);
+  
 
   return (
     <div>
