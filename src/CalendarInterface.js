@@ -50,7 +50,7 @@ async function getInitialDates(startDate){
 }
 
 
-const CalendarInterface = ({currentDate, quill, updateDate}) => {
+const CalendarInterface = ({currentDate, quill, updateDate, handleClose}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [highlightDates, setHighlightDates] = useState([]);
   
@@ -120,12 +120,10 @@ const CalendarInterface = ({currentDate, quill, updateDate}) => {
 
 
   return (
-      // Rendered Calendar and its styling containers
-      <div className="Cal">
-        <div className="Cal__container">
-          <main className="Cal__container__content">
-            {/* react-calendar functionality */}
-            {/* Src code found at: https://github.com/wojtekmaj/react-calendar */}
+      <div className="popup">
+        <div className="popup-content">
+          <button className="btn-close" onClick={handleClose}> x </button>
+          <main className="Sample__container__content">
             <Calendar
             // Props being passed to the calendar: 
               onClickDay={handleDateClick}

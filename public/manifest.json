@@ -5,7 +5,7 @@
 	"version": "1.0",
 	"action": {
 		"default_popup": "index.html",
-		"default_icon": "dayscribe.png"
+		"default_icon": "logo-small.png"
 	},
     "permissions":["storage"]
 

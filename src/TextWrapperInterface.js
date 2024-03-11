@@ -22,6 +22,7 @@ import CalendarInterface from './CalendarInterface.js';
 import previousArrow from './images/previousArrow.png'
 import nextArrow from './images/nextArrow.png'
 import calendarImage from './images/calendar-small.png'
+import logoImage from './images/logo-large.png'
 
 // The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
  
@@ -115,8 +116,8 @@ function CalendarButton({currentDate, quill, updateDate}){
       </button>
       <div>
       {calendarShow && 
-      <CalendarInterface currentDate = {currentDate} quill= {quill} updateDate = {updateDate}/>
-      }
+      <CalendarInterface currentDate = {currentDate} quill= {quill} updateDate = {updateDate} 
+      handleClose ={handleClick}/>
 
       </div>
     </div>
@@ -170,8 +171,9 @@ function TextWrapperInterface() {
 
   return (
     <div>
-      <CalendarButton currentDate = {currentDate} quill = {quillRef} updateDate = {updateCurrentDate}/>
-      <div><center><h1>Hello! Welcome to DayScribe </h1></center></div>
+      <CalendarButton currentDate={currentDate} quill={quillRef} updateDate={updateCurrentDate} handleClose={() => setShowCalendar(false)}
+/>
+      <div><h1>Welcome to  <img src={logoImage} alt = "logo"/></h1></div>
       
       <div className = "navigationBar">
         <Arrow shiftDirection={-1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill={quillRef}/>

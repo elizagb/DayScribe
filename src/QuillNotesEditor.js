@@ -52,14 +52,19 @@ export const QuillNotesEditor = React.forwardRef((props, ref) => {
     console.log("Initializing the Quill Editor");
   }, []);
 
+  const quillStyle = {
+    height: '150px',
+    paddingBottom: '50px'
+  }
 
   return (
-    <div className = {styles.wrapper}>
+    <div className = "editor">
    
       <QuillEditor 
         ref={ref}
         theme="snow" 
         value= {value}
+        style={quillStyle}
         onChange = {(value)=> setValue(value)} 
       />
       
