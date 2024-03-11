@@ -89,6 +89,9 @@ const CalendarInterface = ({currentDate, quill, updateDate, handleClose}) => {
   // Function that runs when a date tile is clicked on the calendar. 
   // Fetches stored note for the clicked date and updates current date accordingly. 
   async function handleDateClick(selectedDate){
+
+    // Close the calendar when a tile is clicked
+    handleClose();
     
     // call note maintenance handler to wy1rite note
     noteWriteRequest(currentDate, quill);
@@ -122,8 +125,9 @@ const CalendarInterface = ({currentDate, quill, updateDate, handleClose}) => {
   return (
       <div className="popup">
         <div className="popup-content">
-          <button className="btn-close" onClick={handleClose}> x </button>
-          <main className="Sample__container__content">
+    
+          <button className="btn-close" onClick={handleClose}> x </button> 
+          <main className="cal__container__content">
             <Calendar
             // Props being passed to the calendar: 
               onClickDay={handleDateClick}
