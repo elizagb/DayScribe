@@ -21,7 +21,7 @@ Function handleNavigationArrows(actionContext)
       Handles arrow click navigation events (swtichign months) and updates highlighted dates accordingly.
 Function handleDateClick(selectedDate):
       Functionality for when a date tile is clicked. Fetches stored note for the clicked date and updates current date accordingly. 
-// Function tileClassName({ date }):
+Function tileClassName({ date }):
       Assigns styling class to calendar tiles based found in highlightDates array (highlighting dates with stored notes). 
 
 
