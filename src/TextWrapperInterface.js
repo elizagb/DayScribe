@@ -171,7 +171,6 @@ function TextWrapperInterface() {
       </div>
       
       <QuillNotesEditor ref={quillRef} currentDate = {currentDate} quill = {quillRef}/> 
-      <button onClick={ () => noteWriteRequest(currentDate, quillRef.current.getEditor().getContents())}> Update Note</button>
     </div>
   )
 }
