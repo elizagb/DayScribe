@@ -96,6 +96,7 @@ function CalendarButton({currentDate, quill, updateDate}){
 
   // toggle for calendar to pop up (rendered component but hidden)
   const [calendarShow, setCalendarShow] = useState(false);
+  
   let returnDates = null;
   
   async function handleClick() {
@@ -118,6 +119,7 @@ function CalendarButton({currentDate, quill, updateDate}){
       {calendarShow && 
       <CalendarInterface currentDate = {currentDate} quill= {quill} updateDate = {updateDate} 
       handleClose ={handleClick}/>
+}
 
       </div>
     </div>
@@ -136,7 +138,7 @@ function TextWrapperInterface() {
   }
 
   // toggle for calendar to pop up (rendered component but hidden)
-  // const [calendarShow, setCalendarShow] = useState(false);
+  const [calendarShow, setCalendarShow] = useState(false);
   
   const quillRef = useRef(null);
 
@@ -171,7 +173,7 @@ function TextWrapperInterface() {
 
   return (
     <div>
-      <CalendarButton currentDate={currentDate} quill={quillRef} updateDate={updateCurrentDate} handleClose={() => setShowCalendar(false)}
+      <CalendarButton currentDate={currentDate} quill={quillRef} updateDate={updateCurrentDate} handleClose={() => setCalendarShow(false)}
 />
       <div><h1>Welcome to  <img src={logoImage} alt = "logo"/></h1></div>
       
