@@ -1,3 +1,12 @@
+/* CS 422 Winter 2024
+ * TextWrapperInterface.js 
+ * Created by Meagan Beckstrand on 2/23/2024
+ * Last modified 3/11/2024
+ * 
+ * 
+ */
+
+
 
 import React, {useState, useRef, useEffect} from 'react';
 import QuillNotesEditor from './QuillNotesEditor.js';

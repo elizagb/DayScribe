@@ -1,10 +1,21 @@
-import Delta from 'quill-delta';
-import { clearCalendar, writeNote,fetchNote, removeNote, printDb, fetchAllDates } from './communicators.js';
-import {tokenizeDate, dateTokensToString, getNextDate, formatDelta} from './eventHandlerHelpers.js'
+/* CS 422 Winter 2024
+ * noteRetrieval.js
+ * Created by Nathan Koga on 3/3/2024
+ * Last modified 3/10/2024
+ * 
+ * Contains intermediary functions that facilitate requests from the interface modules
+ * to fetch specific notes or information regarding populated notes from the note storage.
+ * 
+ * getSpecificNote: Given a specific date string and a "shift direction", returns a Promise object
+ * that handles the asynchronous action of fetching data from the note storage.
+ * 
+ * getValidDates: Given a specific date string, returns a Promise object that handles the
+ * asynchronous action of fetching all valid/populated dates of a given month from the note storage.
+ */
 
-// soon to possibly get passed a reference to the quill editor so that we can
-// update the quill editor?
-// ** We will need to know how THE SYSTEM knows which date's note we are modifyinga **
+
+import {fetchNote, fetchAllDates } from './communicators.js';
+import {dateTokensToString, getNextDate} from './eventHandlerHelpers.js'
 
 
 export async function getSpecificNote(date, shiftDirection){
