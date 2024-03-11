@@ -25,7 +25,7 @@ async function getInitialDates(startDate){
 }
 
 
-const CalendarInterface = ({currentDate, quill, updateDate}) => {
+const CalendarInterface = ({currentDate, quill, updateDate, handleClose}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [highlightDates, setHighlightDates] = useState([]);
   
@@ -86,8 +86,9 @@ const CalendarInterface = ({currentDate, quill, updateDate}) => {
 
 
   return (
-      <div className="Sample">
-        <div className="Sample__container">
+      <div className="popup">
+        <div className="popup-content">
+          <button className="btn-close" onClick={handleClose}> x </button>
           <main className="Sample__container__content">
             <Calendar
               onClickDay={handleDateClick}
