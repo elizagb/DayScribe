@@ -8,10 +8,32 @@ container {
   height: 800px;
 } 
 h1 {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   align-items:center;
   display: flex;
+}
+
+h2 {
+  font-family: Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  align-items:center;
+  display: flex;
+}
+
+h1 img {
+  height: 150px; /* Set the width of the logo */
+  width: auto; /* Maintain the aspect ratio */
+}
+
+.title {
+  /* Center title div */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; 
+  margin-bottom: 1rem;
+
 }
 
 .label {
@@ -52,8 +74,9 @@ h1 {
 .calendarButton {
   border: none;
   background-color: transparent;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
 }
 
 /*https://iconduck.com/icons/299856/calendar-small*/

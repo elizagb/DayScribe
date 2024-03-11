@@ -22,7 +22,8 @@ import CalendarInterface from './CalendarInterface.js';
 import previousArrow from './images/previousArrow.png'
 import nextArrow from './images/nextArrow.png'
 import calendarImage from './images/calendar-small.png'
-import logoImage from './images/logo-large.png'
+// import logoImage from './images/logo-large.png'
+import logoImage from './images/sun-logo.png'
 
 // The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
  
@@ -175,11 +176,12 @@ function TextWrapperInterface() {
     <div>
       <CalendarButton currentDate={currentDate} quill={quillRef} updateDate={updateCurrentDate} handleClose={() => setCalendarShow(false)}
 />
-      <div><h1>Welcome to  <img src={logoImage} alt = "logo"/></h1></div>
+      {/* <div><h1>Welcome to  <img src={logoImage} alt = "logo"/></h1></div> */}
+      <div class="title"><h1><img src={logoImage} alt = "logo"/></h1></div>
       
       <div className = "navigationBar">
         <Arrow shiftDirection={-1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill={quillRef}/>
-        <h2 className = "noteID"> Note for: {currentDate}</h2>
+        <h2 className = "noteID"> Note For: {currentDate}</h2>
         <Arrow shiftDirection={1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill= {quillRef}/>
       </div>
       
