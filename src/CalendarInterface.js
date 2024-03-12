@@ -14,15 +14,15 @@ the imported Calendar component from the react-calendar library.
 Found in this file: 
 
 Function getInitialDates(startDate): 
-      Fetches initial dates to be highlighted on the calendar 
+      - Fetches initial dates to be highlighted on the calendar 
 useEffect hook firstRenderDates():
-      Fetches initial dates, using getInitialDates(), when currentDate changes. Sets highlightDates as this fetched array. 
+      - Fetches initial dates, using getInitialDates(), when currentDate changes. Sets highlightDates as this fetched array. 
 Function handleNavigationArrows(actionContext)
-      Handles arrow click navigation events (swtichign months) and updates highlighted dates accordingly.
+      - Handles arrow click navigation events (swtichign months) and updates highlighted dates accordingly.
 Function handleDateClick(selectedDate):
-      Functionality for when a date tile is clicked. Fetches stored note for the clicked date and updates current date accordingly. 
+      - Functionality for when a date tile is clicked. Fetches stored note for the clicked date and updates current date accordingly. 
 Function tileClassName({ date }):
-      Assigns styling class to calendar tiles based found in highlightDates array (highlighting dates with stored notes). 
+      - Assigns styling class to calendar tiles based found in highlightDates array (highlighting dates with stored notes). 
 
 
 */

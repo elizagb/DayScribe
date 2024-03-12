@@ -1,3 +1,9 @@
+/* CS 422 Winter 2024
+ * TextWrapperInterface.css
+ * Created by Eliza Black on 2/23/2024
+ * Last modified 3/11/2024
+ */
+
 html,
 body {
   height: 100%;
@@ -13,6 +19,7 @@ body {
   /*color: black;   */
 }
 
+/* Styling for calendar tiles with stored notes */
 .react-calendar .highlight {
   /* outline: 2px solid green; */
   background: rgba(0, 254, 161, 0.5);

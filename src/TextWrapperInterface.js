@@ -3,9 +3,18 @@
  * Created by Meagan Beckstrand on 2/23/2024
  * Last modified 3/11/2024
  * 
+ * The Text Wrapper Interface module serves as a wrapper, or container, for the Quill Notes Editor, 
+ * providing a user-friendly interface for interacting with daily notes. It manages the display of 
+ * the current date and navigation arrows for switching between dates, acting as the "parent" component
+ *  that encapsulates the Quill Notes Editor.
+ * 
+ * This module executes the following: 
+ *      - Date Navigation: Allows the user to switch between dates to view notes from different days.
+ *      - Quill Notes Editor Integration: Integrates the Quill Notes Editor component to enable users to write and format their daily notes.
+ *      - Calendar Interface Integration: Integrates Calendar Interface component through calendar icon to enable calendar-based note navigation. 
+ *      - Note Retrieval Requests: Sends requests to the Note Retrieval Handler to retrieve notes for specific dates.
  * 
  */
-
 
 
 import React, {useState, useRef, useEffect} from 'react';
@@ -141,6 +150,11 @@ function TextWrapperInterface() {
   // toggle for calendar to pop up (rendered component but hidden)
   const [calendarShow, setCalendarShow] = useState(false);
   
+  // Save on time interval functionality ------------------------------------------
+  // The following section holds the functionality that allows edits to notes to be saved
+  // every 1000 milliseconds. This allows the user to close the extension and have their changes 
+  // saved automatically. 
+
   const quillRef = useRef(null);
 
   let autosaveTimer = null;
@@ -153,10 +167,12 @@ function TextWrapperInterface() {
 
     autosaveTimer = setInterval(async () => {
       console.log("\n\nsave timer triggered");
+      // Calls noteWriteRequest to store upedates made to the current note
       noteWriteRequest(currentDate, quillRef);
     }, interval);
   }
 
+  // Function startSaveTimer runs every 1000 milliseconds
   useEffect(() => {
 
     startSaveTimer(1000);
@@ -170,6 +186,8 @@ function TextWrapperInterface() {
     };
     // whenever the currentDate gets updated, we restart the timer
   }, [currentDate]);
+
+  // ------------------------------------------
   
 
   return (
@@ -179,6 +197,7 @@ function TextWrapperInterface() {
       {/* <div><h1>Welcome to  <img src={logoImage} alt = "logo"/></h1></div> */}
       <div class="title"><h1><img src={logoImage} alt = "logo"/></h1></div>
       
+      {/* Naviagtion bar above Quill Notes Editor. Includes navigation arrows and the current date. */}
       <div className = "navigationBar">
         <Arrow shiftDirection={-1} currentDate = {currentDate} updateDate = {updateCurrentDate} quill={quillRef}/>
         <h2 className = "noteID"> Note For: {currentDate}</h2>
@@ -191,14 +210,5 @@ function TextWrapperInterface() {
 }
 
 
-{/* <div className = "navigationBar">
-        <Arrow shiftDirection={-1} currentDate = {currentDate} 
-          updateDate = {updateCurrentDate} quillRef={quillEditor}/>
-        <h2 className = "noteID"> Note for: {currentDate}</h2>
-        <Arrow shiftDirection={1} currentDate = {currentDate} 
-          updateDate = {updateCurrentDate} quillRef= {quillEditor}/>
-      </div>
-      
-      {quillEditor} */}
 
 export default TextWrapperInterface;
