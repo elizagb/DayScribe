@@ -23,3 +23,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+App_old.js
+MyComponent.jsx
+Sample.css
+reportWebVitals.js
+SetupTests.js
+favicon.ico
+robots.txt
+.DS_Store
