@@ -1,7 +1,7 @@
 /* CS 422 Winter 2024
  * TextWrapperInterface.js 
  * Created by Meagan Beckstrand on 2/23/2024
- * Last modified 3/11/2024
+ * Last modified 3/12/2024
  * 
  * The Text Wrapper Interface module serves as a wrapper, or container, for the Quill Notes Editor, 
  * providing a user-friendly interface for interacting with daily notes. It manages the display of 
@@ -13,9 +13,12 @@
  *      - Quill Notes Editor Integration: Integrates the Quill Notes Editor component to enable users to write and format their daily notes.
  *      - Calendar Interface Integration: Integrates Calendar Interface component through calendar icon to enable calendar-based note navigation. 
  *      - Note Retrieval Requests: Sends requests to the Note Retrieval Handler to retrieve notes for specific dates.
- * 
+ *
+ * This module includes the following React Components to execute the functionality listed above: 
+ *    Arrow: Creates a clickable Arrow button in a specified direction that, when triggered, fetches the note for the next date.
+ *    CalendarButton: Creates a clickable Calendar button that triggers the Calendar Interface object to render or disappear.
+ *    TextWrapperInterface: Initializes all shared state, sets an auto-save timer, and renders all other components in a specified order.
  */
-
 
 import React, {useState, useRef, useEffect} from 'react';
 import QuillNotesEditor from './QuillNotesEditor.js';
@@ -24,7 +27,6 @@ import Delta from 'quill-delta';
 import './QuillNotesEditor.js';
 import 'quill/dist/quill.snow.css';
 import "./TextWrapperInterface.css";
-import { writeNote,fetchNote, removeNote } from './communicators.js';
 import {getSpecificNote, getValidDates} from './noteRetrieval.js'
 import {noteWriteRequest} from './noteMaintenance.js'
 import CalendarInterface from './CalendarInterface.js';
@@ -34,8 +36,7 @@ import calendarImage from './images/calendar-small.png'
 // import logoImage from './images/logo-large.png'
 import logoImage from './images/sun-logo.png'
 
-// The TextWrapperInterface.js file exists to render the QuillNotesEditor object, as defined in QuillNotesEditor.js
- 
+
 //get current date key
 const currentDate = new Date();
 const year = currentDate.getFullYear();
@@ -47,8 +48,16 @@ const currentDateStr = `${month.toString().padStart(2, '0')}/${day.toString().pa
 
 
 function Arrow({shiftDirection, currentDate, updateDate, quill}) {
-  // shiftDirection an enumerated value determining direction of button
-  // -1 ==> left arrow, 1 ==> right arrow
+  /* This function initializes either the left or right arrow and sets up a handleClick() event that triggers the fetch
+  of the next note in the specified direction.
+
+  Args:
+    shiftDirection (int): An enumerated value determining the direction of button, -1 ==> left arrow, 1 ==> right arrow
+    currentDate (str): A string in "MM/DD/YYYY" form that represents the current date. 
+    updateDate (function): A function that updates the current date to whatever date the Arrow shifts to.
+    quill (reference object): A reference to the Quill Notes Editor that can be used to update the Editor with the requested note.
+  */
+
   let directionText = null;
   let directionImage = null;
   
@@ -81,6 +90,7 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
       }
 
       else{
+        // otherwise, update quill editor with a new Delta object 
         quill.current.getEditor().setContents( new Delta());
       }
       return;
@@ -100,17 +110,25 @@ function Arrow({shiftDirection, currentDate, updateDate, quill}) {
 }
 
 function CalendarButton({currentDate, quill, updateDate}){
-  // on-click, request for populated dates of month, then render calendar
-  // with populated date highlights
-  // getValidDates --> getPopulatedDates()?
+  /* This function initializes the Calendar button and sets up a handleClick() event that triggers the rendering
+  of the Calendar Interface object
 
-  // toggle for calendar to pop up (rendered component but hidden)
+  Args:
+    currentDate (str): A string in "MM/DD/YYYY" form that represents the current date. 
+    quill (reference object): A reference to the Quill Notes Editor that can be used to update the Editor with the requested note.
+    updateDate (function): A function that updates the current date to whatever date the Arrow shifts to.
+  */
+
+  // state of toggle for calendar to pop up (rendered component but hidden)
   const [calendarShow, setCalendarShow] = useState(false);
   
   let returnDates = null;
   
-  async function handleClick() {
+  async function handleClick() {    
+    // on-click, render/hide calendar
+
     try {
+      // flip the calendarShow boolean, which changes from showing to hiding the Calendar Interface 
       setCalendarShow(!calendarShow);
       console.log("Calendar Clicked");
     }
@@ -138,9 +156,11 @@ function CalendarButton({currentDate, quill, updateDate}){
 
 
 function TextWrapperInterface() {
-  
-  // currentDate is the currently focused date ==> starts as today's date, 
-  // but will be changed to reflect the note of the "current date" 
+  /* This function initializes all shared state, sets an auto-save timer, and renders all other components in a specified order.
+  */  
+
+  // Set state for the currentDate: currentDate is the currently focused date which starts as today's date.
+  // the setCurrentDate function will handle updates to reflect the new "current date" 
   const [currentDate, setCurrentDate] = useState(currentDateStr);
 
   const updateCurrentDate = (newDate) => {
@@ -149,17 +169,23 @@ function TextWrapperInterface() {
 
   // toggle for calendar to pop up (rendered component but hidden)
   const [calendarShow, setCalendarShow] = useState(false);
-  
-  // Save on time interval functionality ------------------------------------------
-  // The following section holds the functionality that allows edits to notes to be saved
-  // every 1000 milliseconds. This allows the user to close the extension and have their changes 
-  // saved automatically. 
 
+  // initialize the reference object for the Quill Notes Editor
   const quillRef = useRef(null);
 
+  // initialize the autosaveTimer object (ensures that multiple timers are not set, as this timer is destroyed upon re-render)
   let autosaveTimer = null;
 
+  // Save on time interval functionality ------------------------------------------
+  // The following section holds the functionality that allows edits to notes to be saved
+  // every {interval} milliseconds, currently set to 1 second. This allows the user to close the extension and have their changes 
+  // saved automatically. 
+
   function startSaveTimer(interval) {
+    /* Given an interval, it uses setInterval() to trigger the noteWriteRequest() function every {interavl} milliseconds
+     * Args: 
+          interval (int): represents the time in milliseconds that the noteWriteRequest() should wait before automatically saving
+    */
     if (autosaveTimer !== null){
       console.log("TIMER ALREADY EXISTS: DON'T SET ANOTHER");
       return;
@@ -172,7 +198,8 @@ function TextWrapperInterface() {
     }, interval);
   }
 
-  // Function startSaveTimer runs every 1000 milliseconds
+  // useEffect() is a React hook that allows the Text Wrapper Interface to clear old timers 
+  // and start a new autosave timer whenever currentDate is changed
   useEffect(() => {
 
     startSaveTimer(1000);
@@ -184,7 +211,7 @@ function TextWrapperInterface() {
         autosaveTimer = null;
       }
     };
-    // whenever the currentDate gets updated, we restart the timer
+    // whenever the currentDate gets updated useEffect() triggers, restarting the timer
   }, [currentDate]);
 
   // ------------------------------------------
@@ -208,7 +235,6 @@ function TextWrapperInterface() {
     </div>
   )
 }
-
 
 
 export default TextWrapperInterface;

@@ -1,18 +1,17 @@
+/* CS 422 Winter 2024
+ * index.js
+ * Created by Megan Beckstrand on 2/23/2024
+ * Last modified 3/11/2024
+ * 
+ * Renders the TextWrapperInterface object in a React Root component.
+ * This React Root ultimately renders over the index.html <div> component with the "root" id label.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import TextWrapperInterface from './TextWrapperInterface'
-
-// // Create a container div dynamically
-// const root = document.createElement("div");
-// root.className = "container";
-// document.body.appendChild(root);
-
-// // Function to initialize Quill
-// const initializeQuill = () => {
-//   const quill = new Quill(root, { theme: 'snow' });
-// };
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

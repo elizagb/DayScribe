@@ -1,49 +1,59 @@
+/* CS 422 Winter 2024
+ * QuillNotesEditor.js
+ * Created by Meagan Beckstrand on 2/28/2024
+ * Last modified 3/12/2024
+ * 
+ * Implements the Quill Notes Editor that the user can use to create and edit notes.
+ * 
+ * firstRender: Fetches the note associated to the current date and sets the Quill Editor to the 
+ * returned data, or creates a new Delta object if empty.
+ * This function is only called upon the initial rendering of the QuillNotesEditor component.
+ * 
+ * sources: https://medium.com/@andrewkizito54/creating-a-rich-text-editor-using-react-and-react-quill-3ea990435ade
+ *          https://www.npmjs.com/package/react-quill
+ */
+
+
 import React, { useState, useRef, useEffect } from 'react';
 import QuillEditor from "react-quill";
 import Delta from 'quill-delta';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import {getSpecificNote, getValidDates} from './noteRetrieval.js'
-import {noteWriteRequest} from './noteMaintenance.js'
 import styles from "./TextWrapperInterface.js";
 
-// This is the code for the Quill module (forgot official name)
-// creates the QuillNotesEditor object, which defines the system structure at a high level
-// including navigation buttons, titles, and the quill editor itself
-// source: https://medium.com/@andrewkizito54/creating-a-rich-text-editor-using-react-and-react-quill-3ea990435ade
-
-
-//get current date key
-// const currentDate = new Date();
-// const year = currentDate.getFullYear();
-// const month = currentDate.getMonth() + 1;
-// const day = currentDate.getDate();
-
-// //format 'yyyymmdd'
-// const currentDateStr = `${year}${month.toString().padStart(2, '0')}${day.toString().padStart(2, '0')}`;
-
-
+// creates the QuillNotesEditor component
 export const QuillNotesEditor = React.forwardRef((props, ref) => {
+  // This object uses React.forwardRef to create a React component that renders the Quill Notes Editor
+  // Args:
+  //   props: captures any values passed into the QuillNotesEditor object as props when called, including the current date, and quill reference
+  //   ref: Contains the quill reference that was created when the QuillNotesEditor object was made.
+  
+  // create the state object that detects changes to the Quill Notes Editor
   const [value, setValue] = useState('');
 
-
-  // const quillRef = useRef(null);  // get a reference to the quill editor we create
-  // this "ref" object is accessed by quillRef.current attribute
-
-  // console.log(ref);
-  // ref.current.getEditor().keyboard.addBinding({key: 'S', shortKey: true}, function(){
-  //     let savedDelta = ref.current.getEditor().getContents();
-  //     console.log("auto save triggered");
-  //     noteWriteRequest(currentDate, ref);
-  //   return false;
-  // })
-
+  // Pull the currentDate and quill reference objects out of props, which was passed down from the Text Wrapper Interface
   let {currentDate, quill} = props;
+  // 
+  /*
+  found in the npmjs react-quill documentation under methods:
+    "If you have a ref to a ReactQuill node, you will be able to invoke the following methods
+    (...) getEditor(): Returns the Quill instance that backs the editor (...)"
+    quillRef.current.getEditor().getContents() --> access the quill editor by referece.current
+    getEditor() returns the quill instance associated to the reference, and getContents() returns a delta
+    since the 'value' obtained by useState(''); is just html
+  */
 
-  // on render, fetch the current note, and set the keyboard shortcut for saving
+  // on first render (as specified by the empty dependency in line 63), fetch the current note
   useEffect(() => {
+
+    // define the firstRender function which handles the asynchronous note fetch using the Note Retrieval Handler
     const firstRender = async () => {
+
+      // get the contents of the specified note
       let [retDate, initialDelta] = await getSpecificNote(currentDate, 0);
+      
+      // access the quill editor connected to ref.current.getEditor(), then set the note for the Editor
       ref.current.getEditor().setContents(initialDelta);
       
     };
@@ -71,22 +81,6 @@ export const QuillNotesEditor = React.forwardRef((props, ref) => {
   </div>
   );
 });
-
-// <button onClick={ () => {
-//       console.log(quillRef)
-//       quillRef.current.getEditor().setContents(new Delta().insert('tested Delta'))
-//     }}> quillReference</button>
-
-      // old code to reference just in case (delete once left and right arrows are completed)
-      // <button onClick={ () => noteWriteRequest(currentDateStr, quillRef.current.getEditor().getContents())}> Update Note</button>
-      // <button onClick={ () => getSpecificNote(currentDateStr)}> Retrieve Note</button>
-
-// found in the npmjs react-quill documentation under methods:
-// "If you have a ref to a ReactQuill node, you will be able to invoke the following methods
-// (...) getEditor(): Returns the Quill instance that backs the editor (...)"
-// quillRef.current.getEditor().getContents() --> access the quill editor by referece.current
-// getEditor() returns the quill instance associated to the reference, and getContents() returns a delta
-// since the 'value' obtained by useState(''); is just html
 
 
 export default QuillNotesEditor;  

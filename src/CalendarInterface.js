@@ -54,7 +54,7 @@ const CalendarInterface = ({currentDate, quill, updateDate, handleClose}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [highlightDates, setHighlightDates] = useState([]);
   
-  // Figure out which dates of the month are populated on first render
+  // Figure out which dates of the month are populated on render, whenever the currentDate value changes
   useEffect(() => {
     const firstRenderDates = async () => {
       try {
